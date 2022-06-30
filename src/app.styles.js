@@ -14,6 +14,5 @@ export const Base = styled.div`
 `;
 
 
-export const MiddleContainer = styled(Base)`
-width: 70vw;`
+
 

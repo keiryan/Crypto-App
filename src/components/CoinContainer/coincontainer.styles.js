@@ -12,10 +12,13 @@ width: 100%;
 `
 
 export const CoinIcon = styled.img`
-width: 12px;`;
+width: 14px;
+height: 14px;
+margin: 0 5px;`;
 
-export const CoinNameContainer = styled.div`
-width: 12px;`;
+export const CoinNameContainer = styled(Base)`
+width: 12px;
+align-items: center;`;
 
 export const CoinHeader = styled.tr`
 `;

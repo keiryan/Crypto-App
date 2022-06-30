@@ -6,7 +6,6 @@ export function getMarketCap(value){
     //     2: '',
     // }
 
-    // console.log(value)
     const parsedValue = `${value}`.slice(0, `${value}`.indexOf('.'))
     const numberLength = parsedValue.toString().length;
     const numberSplit = parsedValue.slice(0, 3)

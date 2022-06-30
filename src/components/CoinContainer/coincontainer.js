@@ -28,7 +28,7 @@ const Mock = [
   },
   {
     coinName: "Ethereum",
-    icon: "https://cdn-icons-png.flaticon.com/512/825/825540.png",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/0/01/Ethereum_logo_translucent.svg",
     price: 3000,
     change: 0.53,
     volume: 12.34,

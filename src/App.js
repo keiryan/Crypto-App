@@ -10,13 +10,13 @@ import {
   browserHistory,
 } from "react-router-dom";
 import { styled, ThemeProvider, createGlobalStyle } from "styled-components";
-import { Container, MiddleContainer } from "app.styles";
+import { Container } from "app.styles";
 import Home from "pages/Homepage/homepage";
 import Coinpage from "pages/Coinpage/coinpage";
 import Portfolio from "./pages/Portfolio/portfolio";
 import Navbar from "./components/Navbar/navbar";
 import { NavBarNotch } from "components/NavBarNotch/navbarnotch";
-import CoinContainer from "./components/CoinContainer/coincontainer";
+// import CoinContainer from "./components/CoinContainer/coincontainer";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -62,14 +62,11 @@ function App() {
             exchange={(Math.random() * 1000) | 0}
           />
           <Routes>
-            <Route path="/" element={<Home />}>
-              <Route path="coinpage" element={<Coinpage />} />
-              <Route path="portfolio" element={<Portfolio />} />
-            </Route>
+            <Route exact path="/" element={<Home />}/>
+              <Route exact path="portfolio" element={<Portfolio />} />
+              <Route exact path="coinpage" element={<Coinpage />} />
           </Routes>
-          <MiddleContainer>
-            <CoinContainer />
-          </MiddleContainer>
+          
         </Container>
       </BrowserRouter>
     </ThemeProvider>

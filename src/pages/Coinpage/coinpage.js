@@ -1,11 +1,12 @@
 import React from "react";
-
+import CoinContainer from '../../components/CoinContainer/coincontainer'
+import { MiddleContainer } from './coinpage.styles'
 export default class Coinpage extends React.Component {
   render() {
     return (
-      <div>
-        <h1>Coinpage</h1>
-      </div>
+      <MiddleContainer>
+         <CoinContainer />
+      </MiddleContainer>
     );
   }
 }
