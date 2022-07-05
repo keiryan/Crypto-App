@@ -1,11 +1,11 @@
 import React from "react";
-import CoinContainer from '../../components/CoinContainer/coincontainer'
-import { MiddleContainer } from './coinpage.styles'
 import axios from 'axios';
+import { MiddleContainer } from './coinpage.styles'
+import { CoinContainer } from '../../components/CoinContainer'
 
 export default class CoinPage extends React.Component {
   state = {
-    coinBank: []
+    coinBank: [],
   }
 
   async componentDidMount() {

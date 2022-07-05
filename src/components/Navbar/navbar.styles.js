@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Base } from '../../app.styles'
 import { Link } from 'react-router-dom'
+import { Base } from '../../app.styles'
 
 export const Container = styled.nav`
 display: flex;
