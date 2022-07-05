@@ -1,9 +1,5 @@
 import styled from "styled-components";
-// import Base from '../../app.styles'
-
-const Base = styled.div`
-  display: flex;
-`;
+import { Base } from "../../app.styles";
 
 export const Holder = styled(Base)`
 position: relative;

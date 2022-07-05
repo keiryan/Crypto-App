@@ -32,7 +32,6 @@ export const SearchInput = styled.input`
 export const IconContainer = styled(Base)`
   align-items: center;
   height: 100%;
-  /* padding: 5px; */
   :hover {
     cursor: pointer;
   }

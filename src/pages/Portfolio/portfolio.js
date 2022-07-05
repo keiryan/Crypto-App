@@ -4,8 +4,8 @@ export default class Portfolio extends React.Component {
   render() {
     return (
       <div>
-        <h1>Portfolio tings</h1>
-        </div>
-        );
-    }
+        <h1 style={{color: 'white'}}>Portfolio tings</h1>
+      </div>
+    );
+  }
 }

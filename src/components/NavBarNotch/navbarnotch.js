@@ -5,9 +5,10 @@ import {
   NavBarNotchText,
 } from "./navbarnotch.styles";
 import ProgressBar from "../ProgressBar/progressbar";
-import { getMarketCap } from "utils/MarketCap";
+import abbreviateNumber from "utils/NumberAbbreviator";
 import FastAverageColor from 'fast-average-color';
-export const NavBarNotch = (props) => {
+
+const NavBarNotch = (props) => {
   return (
     <Container>
       <NavBarNotchItem>
@@ -17,10 +18,10 @@ export const NavBarNotch = (props) => {
         <NavBarNotchText>Exchange {props.exchange}</NavBarNotchText>
       </NavBarNotchItem>
       <NavBarNotchItem>
-        <NavBarNotchText>${getMarketCap(props.marketCap)}</NavBarNotchText>
+        <NavBarNotchText>{abbreviateNumber(props.marketCap)}</NavBarNotchText>
       </NavBarNotchItem>
       <NavBarNotchItem>
-        <NavBarNotchText>${getMarketCap(props.coinValue)}</NavBarNotchText>
+        <NavBarNotchText>{abbreviateNumber(props.coinValue)}</NavBarNotchText>
         <ProgressBar value={20} max={100} />
       </NavBarNotchItem>
       <NavBarNotchItem>
@@ -37,3 +38,5 @@ export const NavBarNotch = (props) => {
     </Container>
   );
 };
+
+export default NavBarNotch;
