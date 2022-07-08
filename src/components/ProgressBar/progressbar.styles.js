@@ -4,7 +4,7 @@ import { Base } from '../../app.styles';
 export const OutsideBar = styled(Base)`
 height: 10px;
 flex: 1;
-width: ${props => props.overrideWidth} || 50px;
+width: ${props => props.overrideWidth || '50px'};
 background-color: #2172E5;
 border-radius: 8px;
 overflow: hidden;`

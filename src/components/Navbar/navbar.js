@@ -1,5 +1,4 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
 import {
   Container,
   LinkContainer,
@@ -22,9 +21,8 @@ export default class Navbar extends React.Component {
         <SideContainer>
           <SearchBar />
           <Dropdown list={this.props.coinList}/>
-          <img src="../../icons/bitcoin.png" />
+          <img src="../../icons/Iconly-Bulk-Scan.png" alt='test' />
         </SideContainer>
-        {/* <Outlet/> */}
       </Container>
     );
   }

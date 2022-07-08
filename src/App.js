@@ -1,7 +1,5 @@
-import logo from "./logo.svg";
-import "./App.css";
+import "App.css";
 import React from "react";
-import ReactDOM from "react-dom";
 import {
   BrowserRouter,
   Routes,
@@ -10,13 +8,9 @@ import {
   browserHistory,
 } from "react-router-dom";
 import { styled, ThemeProvider, createGlobalStyle } from "styled-components";
-import { Container, MiddleContainer } from "app.styles";
-import Home from "pages/Homepage/homepage";
-import Coinpage from "pages/Coinpage/coinpage";
-import Portfolio from "./pages/Portfolio/portfolio";
-import Navbar from "./components/Navbar/navbar";
-import { NavBarNotch } from "components/NavBarNotch/navbarnotch";
-import CoinContainer from "./components/CoinContainer/coincontainer";
+import { Container } from "app.styles";
+import { Home, Portfolio, CoinPage } from "pages";
+import {NavBarNotch, Navbar} from "components";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -35,6 +29,26 @@ code {
 
 * {
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: ${(props) => props.theme.primary}
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 8px
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 `;
 
@@ -62,14 +76,10 @@ function App() {
             exchange={(Math.random() * 1000) | 0}
           />
           <Routes>
-            <Route path="/" element={<Home />}>
-              <Route path="coinpage" element={<Coinpage />} />
-              <Route path="portfolio" element={<Portfolio />} />
-            </Route>
+            <Route path="/" element={<Home />} />
+            <Route path="portfolio" element={<Portfolio />} />
+            <Route path="coinpage" element={<CoinPage />} />
           </Routes>
-          <MiddleContainer>
-            <CoinContainer />
-          </MiddleContainer>
         </Container>
       </BrowserRouter>
     </ThemeProvider>
