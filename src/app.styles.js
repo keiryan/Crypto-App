@@ -8,11 +8,13 @@ export const Container = styled.div`
   height: 100vh;
   background-color: ${(props) => props.theme.primary};
   overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const Base = styled.div`
   display: flex;
 `;
+
 
 
 
