@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   TableContainer,
   HeaderItem,
@@ -10,24 +11,28 @@ import {
   CoinNameContainer,
   TableRow,
   ProgressContainer,
+  CoinName,
 } from "./coincontainer.styles";
+
 import ProgressBar from "components/ProgressBar/progressbar";
-import abbreviateNumber from "utils/NumberAbbreviator";
+import abbreviateNumber from "utils/NumberAbbreviator"
+import CoinChart from "components/CoinChart/coinchart";
+import chartReducer from "../../utils/ChartReducer";
 
 const DynamicRow = (props) => (
   <>
     {props.list.map((element, index) => {
       return (
-        <TableRow key={element.id}>
+        <TableRow key={Math.random() * 100000000}>
           <TableItem>{index + 1}</TableItem>
           <TableItem>
             <CoinNameContainer>
               <CoinIcon src={element.image} alt={element.coinName} />
-              {element.name} ({element.symbol.toUpperCase()})
+              <CoinName>{element.name}</CoinName> <div style={{color: '#6188FF'}}>({element.symbol.toUpperCase()})</div>
             </CoinNameContainer>
           </TableItem>
           <TableItem>${element.current_price}</TableItem>
-          <TableNumber><abbr title={element.price_change_percentage_1h_in_currency + '%'}>{element.price_change_percentage_1h_in_currency.toFixed(2)}%</abbr></TableNumber>
+          <TableNumber><abbr title={element?.price_change_percentage_1h_in_currency + '%'}>{element?.price_change_percentage_1h_in_currency?.toFixed(2)}%</abbr></TableNumber>
           <TableNumber><abbr title={element.market_cap_change_percentage_24h + '%'}>{element.market_cap_change_percentage_24h.toFixed(2)}%</abbr></TableNumber>
           <TableNumber><abbr title={element.price_change_percentage_7d_in_currency + '%'}>{element.price_change_percentage_7d_in_currency.toFixed(2)}%</abbr></TableNumber>
           <TableItem >
@@ -51,6 +56,9 @@ const DynamicRow = (props) => (
               max={element.total_supply}
               overrideWidth="100%"
             />
+          </TableItem>
+          <TableItem>
+          <CoinChart name={element.symbol} data={chartReducer(element.sparkline_in_7d.price)}/>
           </TableItem>
         </TableRow>
       );

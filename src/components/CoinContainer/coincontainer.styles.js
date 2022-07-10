@@ -12,8 +12,7 @@ font-size: 14px;
 width: 100%;
 `
 
-export const TableRow = styled.tr`
-`;
+export const TableRow = styled.tr``;
 
 export const CoinIcon = styled.img`
 width: 14px;
@@ -23,6 +22,9 @@ margin: 0 5px;`;
 export const CoinNameContainer = styled(Base)`
 font-weight:bold;
 align-items: center;`;
+
+export const CoinName = styled.div`
+margin-right: 4px;`;
 
 export const TableHeaderItem = styled.th`
 color: ${(props) => props.theme.secondary};`;

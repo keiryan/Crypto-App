@@ -6,7 +6,7 @@ export const Container = styled(Base)`
   height: 35px;
   overflow: hidden;
   border-radius: 8px;
-  background-color: #2c2f36;
+  background-color: ${props => props.theme.quaternary};
   padding: 0px 10px;
 `;
 

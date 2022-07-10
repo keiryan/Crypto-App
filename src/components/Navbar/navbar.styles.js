@@ -23,7 +23,7 @@ export const PageLink = styled(Link)`
   margin: 0 10px;
   padding: 10px 20px;
   border-radius: 8px;
-  background-color: #2C2F36;`;
+  background-color: ${props => props.theme.quaternary};`;
 
 export const SideContainer = styled(Base)`
 align-items: center;

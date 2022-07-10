@@ -59,7 +59,7 @@ const list = [
   { name: "Doge" },
 ];
 
-const Theme = { primary: "#1F2128", secondary: "#ffffff", tertiary: "#191B1F" };
+const Theme = { primary: "#1F2128", secondary: "#ffffff", tertiary: "#191B1F", quaternary: "#2C2F36" };
 function App() {
   return (
     <ThemeProvider theme={Theme}>
