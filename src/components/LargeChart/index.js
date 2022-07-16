@@ -1,0 +1,1 @@
+export { default as LargeChart } from './largechart';

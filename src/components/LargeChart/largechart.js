@@ -1,5 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +11,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Container } from "./coinchart.styles";
 
 ChartJS.register(
   CategoryScale,
@@ -53,28 +53,35 @@ const options = {
   tension: 0.5,
 };
 
-export default class CoinChart extends React.Component {
-  state = {
-    data: {
-      labels: new Array(this.props.data.length).fill(""),
+export default class LargeChart extends React.Component {
+    state = {
+        coin: {},
+    }
+
+  async componentDidMount() {
+    const coin = await axios(
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=1&page=1&sparkline=true`
+    );
+    this.setState({coin: coin.data[0]});
+  }
+
+  render() {
+    console.log(this.props)
+    const data = {
+      labels: new Array(this.state.coin?.sparkline_in_7d?.price.length).fill(""),
       datasets: [
         {
-          label: this.props.name,
-          data: this.props.data,
+          label: this.state.coin.id,
+          data: this.state.coin?.sparkline_in_7d?.price,
           borderColor: "rgb(255, 99, 132)",
           backgroundColor: "rgba(255, 99, 132, 0.5)",
           pointRadius: 0,
-          borderWidth: 0.8,
+          borderWidth: 3,
         },
       ],
-    },
-  };
-
-  render() {
+    };
     return (
-      <Container>
-        <Line options={options} data={this.state.data} />
-      </Container>
+        <Line options={options} data={data} />
     );
   }
 }

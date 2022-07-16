@@ -16,6 +16,10 @@ margin: 0px 16px;
 export const IconContainer = styled(Base)`
 align-items: center;`;
 
+export const Icon = styled.img`
+width: 16px;
+margin: 0px 8px;`;
+
 export const NavBarNotchText = styled.div`
 margin: 0px 5px;
 font-size: 14px;
