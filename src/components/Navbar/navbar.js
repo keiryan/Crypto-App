@@ -14,14 +14,14 @@ export default class Navbar extends React.Component {
       <Container>
         <SideContainer>
           <LinkContainer>
-            <PageLink to="/coinpage">Coinpage</PageLink>
-            <PageLink to="/portfolio">Portfolio</PageLink>
+            <PageLink to="coinpage">Coinpage</PageLink>
+            <PageLink to="portfolio">Portfolio</PageLink>
           </LinkContainer>
         </SideContainer>
         <SideContainer>
           <SearchBar />
-          <Dropdown list={this.props.coinList}/>
-          <img src="../../icons/Iconly-Bulk-Scan.png" alt='test' />
+          <Dropdown list={this.props.coinList} />
+          <img src="../../icons/Iconly-Bulk-Scan.png" alt="test" />
         </SideContainer>
       </Container>
     );

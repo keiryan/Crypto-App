@@ -8,19 +8,10 @@ align-items: center;
 padding: 40px 0px;`
 
 
-export const LoadMoreButton = styled.div`
-background-color: ${(props) => props.theme.quaternary};
-color: ${props => props.theme.secondary};
-padding: 10px 20px;
-border-radius: 8px;
-margin: 20px;
-display: ${props => props.length > 0 ? "block" : "none"};
-:hover {
-    cursor: pointer;
-    color: orange;
-}
-`
+export const LargeChartsContainer = styled(Base)`
+width: 100%;
+justify-content: space-between;`
 
-export const Loading = styled.h2`
-display: ${props => props.loading ? "block" : "none"};
-color: ${props => props.theme.secondary}`;
+export const Spacer = styled.div`
+width: 4%;`
+

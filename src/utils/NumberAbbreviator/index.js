@@ -1,11 +1,19 @@
 export default function abbreviateNumber(num, fiat) {
   let symbol;
-  const fiatSymbol = fiat || '$';
-  if(num === null){
-    return 'Inf'
+  const fiatSymbol = fiat || "$";
+  
+  if (num === null) {
+    return "Inf";
+  } else if (num === 0) {
+    return `${fiatSymbol}0`;
   }
+
   const parsedNum = `${num}`.includes(".") ? `${num}`.split(".")[0] : `${num}`;
   const formula = parsedNum.length % 3;
+
+  if(parsedNum.length < 4){
+    return `${fiatSymbol + parsedNum}`
+  }
   switch (parsedNum.length) {
     case 4:
     case 5:
@@ -28,16 +36,18 @@ export default function abbreviateNumber(num, fiat) {
       symbol = "T";
       break;
     default:
-      symbol = "Error";
+      symbol = "";
   }
   if (formula > 0) {
     const spreadNum = parsedNum.slice(0, formula + 1);
     if (spreadNum.at(-1) > 0) {
-      return `${fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)}.${spreadNum.at(
-        -1
-      )}`.concat(symbol);
+      return `${
+        fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)
+      }.${spreadNum.at(-1)}`.concat(symbol);
     } else {
-      return `${fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)}`.concat(symbol);
+      return `${fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)}`.concat(
+        symbol
+      );
     }
   } else {
     return `${fiatSymbol + parsedNum.slice(0, 3)}${symbol}`;

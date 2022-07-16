@@ -20,6 +20,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: ${props => props.theme.quaternary}
 }
 
 code {
@@ -59,7 +60,7 @@ const list = [
   { name: "Doge" },
 ];
 
-const Theme = { primary: "#1F2128", secondary: "#ffffff", tertiary: "#191B1F", quaternary: "#2C2F36" };
+const Theme = { primary: "#1F2128", secondary: "#ffffff", tertiary: "#191B1F", quaternary: "#2C2F36", quinary: '#191B1F'};
 function App() {
   return (
     <ThemeProvider theme={Theme}>
