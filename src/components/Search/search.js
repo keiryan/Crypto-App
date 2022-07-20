@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, SearchInput, SearchForm, IconContainer} from "./search.styles";
-import { SVGIcon } from "../SVG/SVG";
+import { SVGIcon } from "components";
 import iconFinder from "icons";
 
 export default class SearchBar extends React.Component {
@@ -13,7 +13,6 @@ export default class SearchBar extends React.Component {
   };
 
   handleSubmit = (e) => {
-    console.log('RAN')
     e.preventDefault();
     this.setState({ searchValue: "" });
   };

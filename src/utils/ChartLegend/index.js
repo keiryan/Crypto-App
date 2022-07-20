@@ -103,3 +103,4 @@ export const chartLocator = (input) => {
     return ChartLegend[input];
   }
 };
+ 

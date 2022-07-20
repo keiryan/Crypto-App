@@ -5,8 +5,7 @@ import {
   PageLink,
   SideContainer,
 } from "./navbar.styles";
-import SearchBar from "../Search/search";
-import Dropdown from "components/Dropdown/dropdown";
+import { Dropdown, SearchBar } from "components";
 
 export default class Navbar extends React.Component {
   render() {

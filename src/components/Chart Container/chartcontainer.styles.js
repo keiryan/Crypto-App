@@ -16,7 +16,7 @@ position: absolute;`;
 
 export const Label = styled.div``
 
-export const Number = styled.abbr`
+export const NumberContainer = styled.div`
 font-weight: bold;
 font-size: 26px;`
 

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   TableContainer,
   HeaderItem,
@@ -15,19 +16,15 @@ import {
   Loading,
   LoadMoreButton,
   TableNumberContainer,
-  IconContainer,
+  StyledLink,
 } from "./coincontainer.styles";
-
-import ProgressBar from "components/ProgressBar/progressbar";
-import abbreviateNumber from "utils/NumberAbbreviator";
-import CoinChart from "components/CoinChart/coinchart";
+import {
+  ProgressBar,
+  CoinChart,
+  CoinNumber,
+  AbbreviatedNumber,
+} from "components";
 import chartReducer from "../../utils/ChartReducer";
-import { SVGIcon } from "components/SVG/SVG";
-import iconFinder from "icons";
-
-function isPositive(number) {
-  return number > 0 ? "up-arrow" : "down-arrow";
-}
 
 const DynamicRow = (props) => (
   <>
@@ -36,74 +33,48 @@ const DynamicRow = (props) => (
         <TableRow key={Math.random() * 100000000}>
           <TableItem>{index + 1}</TableItem>
           <TableItem>
-            <CoinNameContainer>
-              <CoinIcon src={element.image} alt={element.coinName} />
-              <CoinName>{element.name}</CoinName>{" "}
-              <div style={{ color: "#6188FF" }}>
-                ({element.symbol.toUpperCase()})
-              </div>
-            </CoinNameContainer>
+            <StyledLink to={`/coin/${element.id}`}>
+              <CoinNameContainer>
+                <CoinIcon src={element.image} alt={element.coinName} />
+                <CoinName>{element.name}</CoinName>{" "}
+                <div style={{ color: "#6188FF" }}>
+                  ({element.symbol.toUpperCase()})
+                </div>
+              </CoinNameContainer>
+            </StyledLink>
           </TableItem>
           <TableItem>${element.current_price}</TableItem>
 
           <TableNumber number={element?.price_change_percentage_1h_in_currency}>
             <TableNumberContainer>
-              <IconContainer>
-                <SVGIcon
-                  icon={iconFinder(
-                    isPositive(element?.price_change_percentage_1h_in_currency)
-                  )}
-                />
-              </IconContainer>
-
-              <abbr
-                title={element?.price_change_percentage_1h_in_currency + "%"}
-              >
-                {element?.price_change_percentage_1h_in_currency?.toFixed(2)}%
-              </abbr>
+              <CoinNumber
+                number={element?.price_change_percentage_1h_in_currency}
+                abbr={true}
+              />
             </TableNumberContainer>
           </TableNumber>
 
           <TableNumber number={element.market_cap_change_percentage_24h}>
             <TableNumberContainer>
-              <IconContainer>
-                <SVGIcon
-                  icon={iconFinder(
-                    isPositive(element.market_cap_change_percentage_24h)
-                  )}
-                />
-              </IconContainer>
-
-              <abbr title={element.market_cap_change_percentage_24h + "%"}>
-                {element.market_cap_change_percentage_24h.toFixed(2)}%
-              </abbr>
+              <CoinNumber
+                number={element.market_cap_change_percentage_24h}
+                abbr={true}
+              />
             </TableNumberContainer>
           </TableNumber>
 
           <TableNumber number={element.price_change_percentage_7d_in_currency}>
             <TableNumberContainer>
-              <IconContainer>
-                <SVGIcon
-                  icon={iconFinder(
-                    isPositive(element.price_change_percentage_7d_in_currency)
-                  )}
-                />
-              </IconContainer>
-              <abbr
-                title={element.price_change_percentage_7d_in_currency + "%"}
-              >
-                {element.price_change_percentage_7d_in_currency.toFixed(2)}%
-              </abbr>
+              <CoinNumber
+                number={element.price_change_percentage_7d_in_currency}
+                abbr={true}
+              />
             </TableNumberContainer>
           </TableNumber>
           <TableItem>
             <ProgressContainer>
-              <abbr title={element.total_volume}>
-                {abbreviateNumber(element.total_volume)}
-              </abbr>
-              <abbr title={element.market_cap}>
-                {abbreviateNumber(element.market_cap)}
-              </abbr>
+              <AbbreviatedNumber number={element.total_volume} />
+              <AbbreviatedNumber number={element.market_cap} />
             </ProgressContainer>
             <ProgressBar
               value={element.total_volume}
@@ -113,12 +84,8 @@ const DynamicRow = (props) => (
           </TableItem>
           <TableItem>
             <ProgressContainer>
-              <abbr title={`$${element.circulating_supply}`}>
-                {abbreviateNumber(element.circulating_supply)}
-              </abbr>
-              <abbr title={`$${element.total_supply}`}>
-                {abbreviateNumber(element.total_supply)}
-              </abbr>
+              <AbbreviatedNumber number={element.circulating_supply} />
+              <AbbreviatedNumber number={element.total_supply} />
             </ProgressContainer>
             <ProgressBar
               value={element.circulating_supply}
@@ -160,7 +127,8 @@ export default class CoinContainer extends React.Component {
   };
 
   nextPage = () => {
-    this.setState({ page: (this.state.page += 1), isLoading: true });
+    const newValue = this.state.page + 1;
+    this.setState({ page: newValue, isLoading: true });
     this.getData();
   };
 
