@@ -1,6 +1,6 @@
 import React from "react";
 import { LargeChartsContainer, MiddleContainer, Spacer } from "./coinpage.styles";
-import { CoinContainer } from "../../components/CoinContainer";
+import { CoinContainer } from "components";
 import { ChartContainer } from "components/Chart Container";
 
 export default class CoinPage extends React.Component {

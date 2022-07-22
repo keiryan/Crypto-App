@@ -1,16 +1,16 @@
 import React from "react";
-import { Line, Bar} from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
 import {
   Container,
   ChartContainerText,
   DataContainer,
   Label,
-  Number,
+  NumberContainer,
   Date,
 } from "./chartcontainer.styles";
 import { chartLocator } from "../../utils/ChartLegend";
-import numberAbbreviator from "../../utils/NumberAbbreviator";
+import { AbbreviatedNumber } from "components";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -57,18 +57,22 @@ export default class ChartContainer extends React.Component {
       coin: data.data.prices,
       config: {
         data: {
-          labels: data.data[chartType.dataType].map((element, index) => index + 1),
+          labels: data.data[chartType.dataType].map(
+            (element, index) => index + 1
+          ),
           datasets: [
             {
               ...chartType.config.data.datasets[0],
-              label: '',
-              data: data.data[chartType.dataType].map((element, index) => element[1]),
+              label: "",
+              data: data.data[chartType.dataType].map(
+                (element, index) => element[1]
+              ),
             },
           ],
         },
         options: {
           ...chartType.config.options,
-        }
+        },
       },
     });
   }
@@ -80,9 +84,16 @@ export default class ChartContainer extends React.Component {
       <Container>
         <ChartContainerText>
           <Label>{this.props.label}</Label>
-          <Number title={`$${this.state.coin?.[0]?.[1]}`}>{numberAbbreviator(this.state.coin?.[0]?.[1])}</Number>
+          <NumberContainer>
+            <AbbreviatedNumber number={this.state.coin?.[0]?.[1]} />
+          </NumberContainer>
         </ChartContainerText>
-        {!this.state.loading && <this.Chart data={this.state.config.data} options={this.state.config.options}/>}
+        {!this.state.loading && (
+          <this.Chart
+            data={this.state.config.data}
+            options={this.state.config.options}
+          />
+        )}
       </Container>
     );
   }

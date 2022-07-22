@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Base } from "../../app.styles";
 
 export const TableContainer = styled(Base)`
@@ -15,11 +16,8 @@ padding: 10px 5px;
 border-radius: 8px;
 `
 
-export const IconContainer = styled(Base)`
-align-items: center;
-justify-content: center;
-margin-top: 2px;
-`
+export const StyledLink = styled(Link)`
+text-decoration: none;`
 
 export const TableRow = styled.tr``;
 
@@ -33,6 +31,7 @@ font-weight:bold;
 align-items: center;`;
 
 export const CoinName = styled.div`
+color: ${(props) => props.theme.secondary};
 margin-right: 4px;`;
 
 export const TableHeaderItem = styled.th`
@@ -45,15 +44,11 @@ width: ${(props) => props.width || "auto"};
 padding: 10px 6px ;
 `;
 
-export const TableNumber = styled.td`
-color: ${props => props.number > 0 ? 'lime' : 'red'};
-text-align: center;
-`
+export const TableNumber = styled.td``
 
 export const TableNumberContainer = styled(Base)`
 width: 100%;
-justify-content: center;
-align-items: center;`;
+justify-content: center;`;
 
 export const HeaderItem = styled(Base)`
 color: ${(props) => props.theme.secondary};
@@ -78,3 +73,4 @@ display: ${props => props.length > 0 ? "block" : "none"};
     color: orange;
 }
 `
+

@@ -6,11 +6,12 @@ import {
   Route,
   Link,
   browserHistory,
+  useParams,
 } from "react-router-dom";
 import { styled, ThemeProvider, createGlobalStyle } from "styled-components";
 import { Container } from "app.styles";
-import { Home, Portfolio, CoinPage } from "pages";
-import {NavBarNotch, Navbar} from "components";
+import { Home, Portfolio, CoinPage, Coin } from "pages";
+import { NavBarNotch, Navbar } from "components";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -80,6 +81,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="coinpage" element={<CoinPage />} />
+            {/* <Route path="*" element={<Home />} /> */}
+            <Route path="coin/:id" element={<Coin />} />
           </Routes>
         </Container>
       </BrowserRouter>
