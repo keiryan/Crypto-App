@@ -1,1 +1,1 @@
-export { default as SVGIcon } from "./SVG";
+export { default as SVG } from "./SVG";

@@ -1,6 +1,5 @@
 import { Container, Number, IconContainer } from "./coinnumber.styles";
-import iconFinder from "icons";
-import { SVGIcon } from "components";
+import { SVG } from "components";
 
 const CoinNumber = (props) => {
   function isPositive(number) {
@@ -9,7 +8,7 @@ const CoinNumber = (props) => {
   return (
     <Container>
       <IconContainer>
-        <SVGIcon icon={iconFinder(isPositive(props.number))} />
+        <SVG name={isPositive(props.number)} />
       </IconContainer>
       {props.abbr ? (
         <abbr title={props.number + "%"}>

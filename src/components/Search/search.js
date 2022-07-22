@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, SearchInput, SearchForm, IconContainer} from "./search.styles";
-import { SVGIcon } from "components";
-import iconFinder from "icons";
+import { SVG } from "components";
 
 export default class SearchBar extends React.Component {
   state = {
@@ -20,7 +19,7 @@ export default class SearchBar extends React.Component {
     return (
       <Container>
         <IconContainer onClick={this.handleSubmit}>
-          <SVGIcon icon={iconFinder('search')} />
+          <SVG name={'search'} />
         </IconContainer>
         <SearchForm onSubmit={this.handleSubmit}>
           <SearchInput
