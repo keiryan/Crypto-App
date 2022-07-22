@@ -1,16 +1,9 @@
 import "App.css";
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  browserHistory,
-  useParams,
-} from "react-router-dom";
-import { styled, ThemeProvider, createGlobalStyle } from "styled-components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { Container } from "app.styles";
-import { Home, Portfolio, CoinPage, Coin } from "pages";
+import { Home, Portfolio, CoinPage, Coin, Lost } from "pages";
 import { NavBarNotch, Navbar } from "components";
 
 const GlobalStyle = createGlobalStyle`
@@ -21,7 +14,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: ${props => props.theme.quaternary}
+  background-color: ${(props) => props.theme.quaternary}
 }
 
 code {
@@ -61,7 +54,13 @@ const list = [
   { name: "Doge" },
 ];
 
-const Theme = { primary: "#1F2128", secondary: "#ffffff", tertiary: "#191B1F", quaternary: "#2C2F36", quinary: '#191B1F'};
+const Theme = {
+  primary: "#1F2128",
+  secondary: "#ffffff",
+  tertiary: "#191B1F",
+  quaternary: "#2C2F36",
+  quinary: "#191B1F",
+};
 function App() {
   return (
     <ThemeProvider theme={Theme}>
@@ -81,8 +80,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="coinpage" element={<CoinPage />} />
-            {/* <Route path="*" element={<Home />} /> */}
             <Route path="coin/:id" element={<Coin />} />
+            <Route path="*" element={<Lost />} />
           </Routes>
         </Container>
       </BrowserRouter>

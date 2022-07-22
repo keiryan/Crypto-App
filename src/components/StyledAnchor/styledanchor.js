@@ -9,8 +9,7 @@ import {
   TooltipPoint,
   TooltipText,
 } from "./styledanchor.styles";
-import { SVGIcon } from "components/SVG";
-import iconFinder from "icons";
+import { SVG } from "components";
 
 export default class StyledAnchor extends React.Component {
   state = {
@@ -19,7 +18,7 @@ export default class StyledAnchor extends React.Component {
   };
 
   linkSplitter = (link) => {
-    return link.split("www.")[1];
+    return link.split("www.")[1] || link.split("https://")[1];
   };
 
   copy = () => {
@@ -35,7 +34,7 @@ export default class StyledAnchor extends React.Component {
       <Container>
         <Link href={this.props.link} target={"_blank"}>
           <IconContainer>
-            <SVGIcon icon={iconFinder("link")} />
+            <SVG name="link" />
           </IconContainer>
           <Spacer></Spacer>
           {this.props.link && this.linkSplitter(this.props.link)}
@@ -48,9 +47,9 @@ export default class StyledAnchor extends React.Component {
               <TooltipText show={this.state.clicked}>Copied!</TooltipText>
             </Tooltip>
           </TooltipContainer>
-          <SVGIcon
+          <SVG
             overrideFill={this.state.clicked ? "lime" : "#fff"}
-            icon={iconFinder("copy")}
+            name="copy"
           />
         </IconContainer>
       </Container>
