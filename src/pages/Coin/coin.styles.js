@@ -120,5 +120,11 @@ export const LargeIconContainer = styled.div`
 `;
 
 export const CoinConversionContainer = styled(Base)`
-justify-content: center;
-width: 100%;`
+  justify-content: center;
+  width: 100%;
+`;
+
+export const CoinChartContainer = styled.div`
+margin: 40px 0px;
+width: 100%;
+height: 200px;`

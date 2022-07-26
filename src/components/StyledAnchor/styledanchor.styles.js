@@ -31,7 +31,6 @@ export const Link = styled.a`
   text-decoration: none;
   flex: 1;
   color: ${(props) => props.theme.secondary};
-  /* margin: 0 20px; */
 `;
 
 export const TooltipContainer = styled.div`
