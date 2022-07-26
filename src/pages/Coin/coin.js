@@ -42,6 +42,7 @@ import {
   AbbreviatedNumber,
   StyledAnchor,
   ConversionBar,
+  RangeSelector,
 } from "components";
 
 import { chartLocator } from "../../utils/ChartLegend";
@@ -70,44 +71,73 @@ class Coin extends React.Component {
       data: {},
       options: {},
     },
+    chart: {
+      timeFrame: 7,
+      data: {},
+    }
   };
 
   getData = async () => {
-    const chartType = chartLocator("BottomLine");
     const data = await axios(
       `https://api.coingecko.com/api/v3/coins/${this.props.param.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`
     );
+    const chartData = await axios(
+      `https://api.coingecko.com/api/v3/coins/${this.props.param.id}/market_chart?vs_currency=usd&days=${this.state.chart.timeFrame}&interval=daily`);
 
     this.setState({
       loading: false,
       coin: data.data,
-      config: {
-        data: {
-          labels: data.data.market_data.sparkline_7d.price.map(
-            (element, index) => index + 1
-          ),
-          datasets: [
-            {
-              ...chartType.config.data.datasets[0],
-              label: "",
-              data: data.data.market_data.sparkline_7d.price.map(
-                (element, index) => element
-              ),
-            },
-          ],
-        },
-        options: {
-          ...chartType.config.options,
-        },
-      },
+      chart: {
+        ...this.state.chart,
+        data: chartData.data,
+      }
     });
   };
 
+  getChartData = async () => {
+    const chartData = await axios(
+      `https://api.coingecko.com/api/v3/coins/${this.props.param.id}/market_chart?vs_currency=usd&days=${this.state.chart.timeFrame}&interval=daily`);
+      this.setState({chart: {...this.state.chart, data: chartData.data}});
+  }
+
   async componentDidMount() {
     this.getData();
+  }1
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.chart.timeFrame !== this.state.chart.timeFrame) {
+      this.getChartData()
+    }
+  }
+
+  handleTimeFrame = (timeFrame) => {
+    this.setState({chart:{
+      ...this.state.chart,
+      timeFrame: timeFrame
+    }});
   }
 
   render() {
+    const chartType = chartLocator("BottomLine");
+    const config = !this.state.loading && {
+      data: {
+        labels: this.state.chart.data.prices.map(
+          (element, index) => index + 1
+        ),
+        datasets: [
+          {
+            ...chartType.config.data.datasets[0],
+            label: "",
+            data: this.state.chart.data.prices.map(
+              (element, index) => element[1]
+            ),
+          },
+        ],
+      },
+      options: {
+        ...chartType.config.options,
+      },
+  }
     return (
       <>
       <Container>
@@ -236,23 +266,23 @@ class Coin extends React.Component {
         <Description
           dangerouslySetInnerHTML={{ __html: this.state.coin?.description?.en }}
         />
+        <RangeSelector handleTimeFrame={this.handleTimeFrame}/>
         <CoinConversionContainer>
-          <ConversionBar
+          {this.state.loading && (<ConversionBar
             fiat={{
               name: "USD",
               value: this.state.coin?.market_data?.current_price?.usd,
               currentPrice: this.state.coin?.market_data?.current_price?.usd,
             }}
             crypto={this.state.coin?.symbol}
-          />
+          />)}
         </CoinConversionContainer>
-        
       </Container>
       <CoinChartContainer>
           {!this.state.loading && (
             <Line
-              data={this.state.config.data}
-              options={this.state.config.options}
+              data={config.data}
+              options={config.options}
             />
           )}
         </CoinChartContainer>
