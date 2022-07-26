@@ -23,14 +23,15 @@ import {
   NumberContainer,
   ListContainer,
   LargeIconContainer,
+  CoinConversionContainer,
 } from "./coin.styles";
 import simpleDateParser from "utils/DateParser/dateparser";
-import iconFinder from "icons";
 import {
   CoinNumber,
-  SVGIcon,
+  SVG,
   AbbreviatedNumber,
   StyledAnchor,
+  ConversionBar,
 } from "components";
 
 function WithRouter(props) {
@@ -55,19 +56,6 @@ class Coin extends React.Component {
   async componentDidMount() {
     this.getData();
   }
-
-  async componentDidUpdate(prevProps, prevState) {
-    // console.log(this.props.match.params);
-    // if (this.props.match.params.id !== prevProps.match.params.id) {
-    //     console.log('IF FIRED');
-    //   this.getCity();
-    // }
-  }
-
-  // <Link href={this.state.coin?.links?.homepage?.[0]} target={"_blank"}>
-  //       {this.state.coin?.links?.homepage?.[0] &&
-  //         this.linkSplitter(this.state.coin?.links?.homepage?.[0])}
-  //     </Link>
 
   render() {
     console.log(this.state.coin);
@@ -97,7 +85,7 @@ class Coin extends React.Component {
             />
 
             <LargeIconContainer>
-              <SVGIcon icon={iconFinder("stack")} />
+              <SVG name={"stack"} />
             </LargeIconContainer>
 
             <AllTimeContainer>
@@ -199,7 +187,17 @@ class Coin extends React.Component {
         </TopContainers>
         <Description
           dangerouslySetInnerHTML={{ __html: this.state.coin?.description?.en }}
-        ></Description>
+        />
+        <CoinConversionContainer>
+          <ConversionBar
+            fiat={{
+              name: "USD",
+              value: this.state.coin?.market_data?.current_price?.usd,
+            }}
+            crypto={this.state.coin?.symbol}
+            price={this.state.coin?.market_data?.current_price?.usd}
+          />
+        </CoinConversionContainer>
       </Container>
     );
   }

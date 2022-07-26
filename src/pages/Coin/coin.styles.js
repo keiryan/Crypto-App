@@ -45,8 +45,8 @@ export const CoinProfile = styled.img`
 export const TopContainers = styled(Base)``;
 
 export const Description = styled.p`
-line-height: 26px;
-text-align: justify;
+  line-height: 26px;
+  text-align: justify;
   a {
     text-decoration: none;
     color: royalblue;
@@ -86,7 +86,8 @@ export const ListItem = styled.li`
 `;
 
 export const ListHeader = styled.h3`
-margin: 0;`;
+  margin: 0;
+`;
 
 export const Section = styled.section`
   display: flex;
@@ -97,20 +98,27 @@ export const Section = styled.section`
 `;
 
 export const NumberContainer = styled(Base)`
-align-items: center;`;
+  align-items: center;
+`;
 
 export const AllTimeContainer = styled(Base)``;
 
 export const DataType = styled.span`
-color: ${(props) => props.color || props.theme.secondary};
-margin: 0px 4px;
-font-weight: bold;`;
+  color: ${(props) => props.color || props.theme.secondary};
+  margin: 0px 4px;
+  font-weight: bold;
+`;
 
 export const DataValue = styled.div``;
 
 export const ListContainer = styled.div`
-width: 100%;`
+  width: 100%;
+`;
 
 export const LargeIconContainer = styled.div`
-margin: 6px 0px;
+  margin: 6px 0px;
 `;
+
+export const CoinConversionContainer = styled(Base)`
+justify-content: center;
+width: 100%;`
