@@ -1,5 +1,4 @@
 function simpleDateParser(date) {
-  console.log('DATE', date);
   if (date === undefined) {
     return "";
   } else {

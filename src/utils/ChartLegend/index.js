@@ -96,6 +96,60 @@ const ChartLegend = {
       },
     },
   },
+
+  'BottomLine': {
+    api: "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily",
+    dataType: "prices",
+    config: {
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: "",
+            data: [],
+            fill: true,
+            borderColor: "#AFD0BF",
+            fill: true,
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
+            pointRadius: 0,
+            borderWidth: 3,
+            tension: 0.5,
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: false,
+            text: "Chart.js Line Chart",
+          },
+        },
+
+        scales: {
+          y: {
+            display: false,
+            grid: {
+              display: false,
+              drawBorder: false,
+            },
+          },
+          x: {
+            display: false,
+            grid: {
+              display: false,
+              drawBorder: false,
+            },
+          },
+        },
+        tension: 0.5,
+      },
+    },
+  }
 };
 
 export const chartLocator = (input) => {

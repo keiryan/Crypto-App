@@ -4,8 +4,9 @@ import {
   LinkContainer,
   PageLink,
   SideContainer,
+  ThemeContainer,
 } from "./navbar.styles";
-import { Dropdown, SearchBar } from "components";
+import { Dropdown, SearchBar, SVG } from "components";
 
 export default class Navbar extends React.Component {
   render() {
@@ -20,7 +21,9 @@ export default class Navbar extends React.Component {
         <SideContainer>
           <SearchBar />
           <Dropdown list={this.props.coinList} />
-          <img src="../../icons/Iconly-Bulk-Scan.png" alt="test" />
+          <ThemeContainer onClick={this.props.toggleTheme}>
+            <SVG name="moon" />
+          </ThemeContainer>
         </SideContainer>
       </Container>
     );

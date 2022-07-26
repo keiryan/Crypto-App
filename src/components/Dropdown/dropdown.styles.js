@@ -8,7 +8,7 @@ position: relative;
 export const Container = styled(Base)`
   flex-direction: column;
   padding: 0px 10px;
-  color: white;
+  color: ${props => props.theme.secondary};
   border-radius: 8px;
   background-color: ${(props) => props.theme.primary};
 `;

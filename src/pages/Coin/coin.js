@@ -1,5 +1,16 @@
 import React from "react";
 import axios from "axios";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useParams } from "react-router-dom";
 import {
   CoinName,
@@ -10,8 +21,6 @@ import {
   CoinNameContainer,
   CoinSymbol,
   Description,
-  LinkContainer,
-  IconContainer,
   CoinPrice,
   SmallDataContainer,
   List,
@@ -23,15 +32,28 @@ import {
   NumberContainer,
   ListContainer,
   LargeIconContainer,
+  CoinConversionContainer,
+  CoinChartContainer,
 } from "./coin.styles";
 import simpleDateParser from "utils/DateParser/dateparser";
-import iconFinder from "icons";
 import {
   CoinNumber,
-  SVGIcon,
+  SVG,
   AbbreviatedNumber,
   StyledAnchor,
+  ConversionBar,
 } from "components";
+
+import { chartLocator } from "../../utils/ChartLegend";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function WithRouter(props) {
   const params = useParams();
@@ -43,39 +65,53 @@ function WithRouter(props) {
 class Coin extends React.Component {
   state = {
     coin: {},
+    loading: true,
+    config: {
+      data: {},
+      options: {},
+    },
   };
 
   getData = async () => {
+    const chartType = chartLocator("BottomLine");
     const data = await axios(
       `https://api.coingecko.com/api/v3/coins/${this.props.param.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`
     );
-    this.setState({ coin: data.data });
+
+    this.setState({
+      loading: false,
+      coin: data.data,
+      config: {
+        data: {
+          labels: data.data.market_data.sparkline_7d.price.map(
+            (element, index) => index + 1
+          ),
+          datasets: [
+            {
+              ...chartType.config.data.datasets[0],
+              label: "",
+              data: data.data.market_data.sparkline_7d.price.map(
+                (element, index) => element
+              ),
+            },
+          ],
+        },
+        options: {
+          ...chartType.config.options,
+        },
+      },
+    });
   };
 
   async componentDidMount() {
     this.getData();
   }
 
-  async componentDidUpdate(prevProps, prevState) {
-    // console.log(this.props.match.params);
-    // if (this.props.match.params.id !== prevProps.match.params.id) {
-    //     console.log('IF FIRED');
-    //   this.getCity();
-    // }
-  }
-
-  // <Link href={this.state.coin?.links?.homepage?.[0]} target={"_blank"}>
-  //       {this.state.coin?.links?.homepage?.[0] &&
-  //         this.linkSplitter(this.state.coin?.links?.homepage?.[0])}
-  //     </Link>
-
   render() {
-    console.log(this.state.coin);
     return (
+      <>
       <Container>
-        <h1 style={{ color: "white", "text-decoration": "underline" }}>
-          Summary
-        </h1>
+        <h1 style={{ color: "white", textDecoration: "underline" }}>Summary</h1>
         <TopContainers>
           <SmallDataContainer>
             <CoinProfile src={this.state.coin?.image?.large} />
@@ -97,7 +133,7 @@ class Coin extends React.Component {
             />
 
             <LargeIconContainer>
-              <SVGIcon icon={iconFinder("stack")} />
+              <SVG name="stack" />
             </LargeIconContainer>
 
             <AllTimeContainer>
@@ -199,8 +235,28 @@ class Coin extends React.Component {
         </TopContainers>
         <Description
           dangerouslySetInnerHTML={{ __html: this.state.coin?.description?.en }}
-        ></Description>
+        />
+        <CoinConversionContainer>
+          <ConversionBar
+            fiat={{
+              name: "USD",
+              value: this.state.coin?.market_data?.current_price?.usd,
+              currentPrice: this.state.coin?.market_data?.current_price?.usd,
+            }}
+            crypto={this.state.coin?.symbol}
+          />
+        </CoinConversionContainer>
+        
       </Container>
+      <CoinChartContainer>
+          {!this.state.loading && (
+            <Line
+              data={this.state.config.data}
+              options={this.state.config.options}
+            />
+          )}
+        </CoinChartContainer>
+      </>
     );
   }
 }
