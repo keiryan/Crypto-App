@@ -1,5 +1,16 @@
 import React from "react";
 import axios from "axios";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useParams } from "react-router-dom";
 import {
   CoinName,
@@ -10,8 +21,6 @@ import {
   CoinNameContainer,
   CoinSymbol,
   Description,
-  LinkContainer,
-  IconContainer,
   CoinPrice,
   SmallDataContainer,
   List,
@@ -24,6 +33,7 @@ import {
   ListContainer,
   LargeIconContainer,
   CoinConversionContainer,
+  CoinChartContainer,
 } from "./coin.styles";
 import simpleDateParser from "utils/DateParser/dateparser";
 import {
@@ -33,6 +43,17 @@ import {
   StyledAnchor,
   ConversionBar,
 } from "components";
+
+import { chartLocator } from "../../utils/ChartLegend";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function WithRouter(props) {
   const params = useParams();
@@ -44,13 +65,42 @@ function WithRouter(props) {
 class Coin extends React.Component {
   state = {
     coin: {},
+    loading: true,
+    config: {
+      data: {},
+      options: {},
+    },
   };
 
   getData = async () => {
+    const chartType = chartLocator("BottomLine");
     const data = await axios(
       `https://api.coingecko.com/api/v3/coins/${this.props.param.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`
     );
-    this.setState({ coin: data.data });
+
+    this.setState({
+      loading: false,
+      coin: data.data,
+      config: {
+        data: {
+          labels: data.data.market_data.sparkline_7d.price.map(
+            (element, index) => index + 1
+          ),
+          datasets: [
+            {
+              ...chartType.config.data.datasets[0],
+              label: "",
+              data: data.data.market_data.sparkline_7d.price.map(
+                (element, index) => element
+              ),
+            },
+          ],
+        },
+        options: {
+          ...chartType.config.options,
+        },
+      },
+    });
   };
 
   async componentDidMount() {
@@ -58,12 +108,10 @@ class Coin extends React.Component {
   }
 
   render() {
-    console.log(this.state.coin);
     return (
+      <>
       <Container>
-        <h1 style={{ color: "white", "text-decoration": "underline" }}>
-          Summary
-        </h1>
+        <h1 style={{ color: "white", textDecoration: "underline" }}>Summary</h1>
         <TopContainers>
           <SmallDataContainer>
             <CoinProfile src={this.state.coin?.image?.large} />
@@ -85,7 +133,7 @@ class Coin extends React.Component {
             />
 
             <LargeIconContainer>
-              <SVG name={"stack"} />
+              <SVG name="stack" />
             </LargeIconContainer>
 
             <AllTimeContainer>
@@ -193,12 +241,22 @@ class Coin extends React.Component {
             fiat={{
               name: "USD",
               value: this.state.coin?.market_data?.current_price?.usd,
+              currentPrice: this.state.coin?.market_data?.current_price?.usd,
             }}
             crypto={this.state.coin?.symbol}
-            price={this.state.coin?.market_data?.current_price?.usd}
           />
         </CoinConversionContainer>
+        
       </Container>
+      <CoinChartContainer>
+          {!this.state.loading && (
+            <Line
+              data={this.state.config.data}
+              options={this.state.config.options}
+            />
+          )}
+        </CoinChartContainer>
+      </>
     );
   }
 }

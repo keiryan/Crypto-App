@@ -60,33 +60,60 @@ const Theme = {
   tertiary: "#191B1F",
   quaternary: "#2C2F36",
   quinary: "#191B1F",
+  progressBar: {
+    color: "#fff",
+    background: "#2172E5",
+  },
 };
-function App() {
-  return (
-    <ThemeProvider theme={Theme}>
-      <BrowserRouter>
-        <Container>
-          <GlobalStyle />
-          <Navbar coinList={list} />
-          <NavBarNotch
-            firstCoin={{ percentage: 44 }}
-            secondCoin={{ percentage: 21 }}
-            coinValue={Math.random() * 10_000_000_000_000}
-            marketCap={Math.random() * 10_000_000_000_000}
-            totalAmountOfCoins={(Math.random() * 10000) | 0}
-            exchange={(Math.random() * 1000) | 0}
-          />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="portfolio" element={<Portfolio />} />
-            <Route path="coinpage" element={<CoinPage />} />
-            <Route path="coin/:id" element={<Coin />} />
-            <Route path="*" element={<Lost />} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
-    </ThemeProvider>
-  );
+
+
+const InvertTheme = {
+  primary: "#A57548",
+  secondary: "#000",
+  tertiary: "#EBEBEB",
+  quaternary: "#3A6EA5",
+  quinary: "#033758",
+  progressBar: {
+    color: "#82DDF0",
+    background: "#5296A5",
+  }
 }
 
-export default App;
+export default class App extends React.Component {
+  state = {
+    theme: Theme,
+  };
+
+  toggleTheme = () => {
+    this.setState({
+      theme: this.state.theme === Theme ? InvertTheme : Theme,
+    });
+  };
+  render() {
+    return (
+      <ThemeProvider theme={this.state.theme}>
+        <BrowserRouter>
+          <Container>
+            <GlobalStyle />
+            <Navbar coinList={list} toggleTheme={this.toggleTheme} />
+            <NavBarNotch
+              firstCoin={{ percentage: 44 }}
+              secondCoin={{ percentage: 21 }}
+              coinValue={Math.random() * 10_000_000_000_000}
+              marketCap={Math.random() * 10_000_000_000_000}
+              totalAmountOfCoins={(Math.random() * 10000) | 0}
+              exchange={(Math.random() * 1000) | 0}
+            />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="portfolio" element={<Portfolio />} />
+              <Route path="coinpage" element={<CoinPage />} />
+              <Route path="coin/:id" element={<Coin />} />
+              <Route path="*" element={<Lost />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      </ThemeProvider>
+    );
+  }
+}

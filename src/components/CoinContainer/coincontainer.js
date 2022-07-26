@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import {
   TableContainer,
   HeaderItem,
@@ -133,7 +132,6 @@ export default class CoinContainer extends React.Component {
   };
 
   render() {
-    console.log(this.state.coinBank);
     return (
       <TableContainer>
         <Loading loading={this.state.isLoading}>Loading...</Loading>

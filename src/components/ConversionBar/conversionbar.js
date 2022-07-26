@@ -5,6 +5,7 @@ import {
   NumberContainer,
   SymbolContainer,
   InputContainer,
+  FiatContainer,
 } from "./conversionbar.styles";
 import { SVG } from "components";
 
@@ -12,8 +13,14 @@ export const NumberInput = (props) => {
   return (
     <NumberContainer>
       <SymbolContainer>{props.symbol?.toUpperCase()}</SymbolContainer>
+      <FiatContainer>{props.fiat}</FiatContainer>
       <InputContainer>
-        <Input type="text" value={props.value} />
+        <Input
+          type="text"
+          placeholder="Enter amount"
+          onChange={props.handleChange}
+          value={props.value}
+        />
       </InputContainer>
     </NumberContainer>
   );
@@ -21,47 +28,52 @@ export const NumberInput = (props) => {
 
 export default class ConversionBar extends React.Component {
   state = {
-    fiat: this.props?.fiat?.value,
+    fiat: {},
     crypto: 1,
   };
 
   fiatChange = (e) => {
+    const { value } = e.target;
     this.setState({
-      fiat: e.target.value,
-      crypto: ~~e.target.value / this.props?.fiat?.value,
+      fiat: {
+        ...this.state.fiat,
+        value: value,
+      },
+      crypto: value / this.state.fiat.currentPrice,
     });
   };
 
   cryptoChange = (e) => {
+    const { value } = e.target;
     this.setState({
-      crypto: e.target.value,
-      fiat: (this.props?.fiat?.value * e.target.value) >> 0,
+      crypto: value,
+      fiat: {
+        ...this.state.fiat,
+        value: value * this.state.fiat.currentPrice,
+      },
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps !== this.props) {
-       this.setState({fiat: this.props?.fiat?.value})
+  componentDidUpdate(prevProps) {
+    if (prevProps.fiat !== this.props.fiat) {
+      this.setState({ fiat: { ...this.props.fiat } });
     }
-}
+  }
 
   render() {
     return (
       <Container>
         <NumberInput
-          symbol={this.props?.fiat?.name}
-          onChange={this.fiatChange}
-          type="text"
-          placeholder="Enter amount"
-          value={this.state.fiat}
+          symbol={this.state?.fiat?.name}
+          handleChange={this.fiatChange}
+          value={this.state.fiat.value}
+          fiat="$"
         />
-        <SVG name='sync' />
+        <SVG name="sync" />
         <NumberInput
-          symbol={this.props?.crypto}
-          onChange={this.cryptoChange}
-          type="text"
-          placeholder="Enter amount "
-          value={this.state?.crypto}
+          symbol={this.props.crypto}
+          handleChange={this.cryptoChange}
+          value={this.state.crypto}
         />
       </Container>
     );

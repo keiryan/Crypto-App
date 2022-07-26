@@ -19,7 +19,7 @@ export default class SearchBar extends React.Component {
     return (
       <Container>
         <IconContainer onClick={this.handleSubmit}>
-          <SVG name={'search'} />
+          <SVG name='search'/>
         </IconContainer>
         <SearchForm onSubmit={this.handleSubmit}>
           <SearchInput

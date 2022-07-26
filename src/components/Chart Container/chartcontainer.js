@@ -85,7 +85,7 @@ export default class ChartContainer extends React.Component {
         <ChartContainerText>
           <Label>{this.props.label}</Label>
           <NumberContainer>
-            <AbbreviatedNumber number={this.state.coin?.[0]?.[1]} />
+            <AbbreviatedNumber number={this.state.coin?.at(-1)?.[1]} />
           </NumberContainer>
         </ChartContainerText>
         {!this.state.loading && (

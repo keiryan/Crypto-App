@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Base = styled.div`
   display: flex;
+`;
+
+export const Container = styled(Base)`
   flex-direction: column;
   align-items: center;
   width: 100vw;
@@ -11,9 +14,7 @@ export const Container = styled.div`
   overflow-x: hidden;
 `;
 
-export const Base = styled.div`
-  display: flex;
-`;
+
 
 
 

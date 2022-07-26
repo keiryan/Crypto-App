@@ -1,7 +1,12 @@
-export default function Lost () {
+import { Container, Header, StyledLink, Subeader } from "./lost.styles";
+
+export default function Lost() {
   return (
     <div>
-      <h1 style={{color: 'white'}}>Looks like you got lost!</h1>
+      <Container>
+        <Header>Lost?</Header>
+        <Subeader>Theres no place like <StyledLink to='/'>home</StyledLink></Subeader>
+      </Container>
     </div>
   );
 }
