@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { Base } from "../../app.styles";
 
 export const Holder = styled(Base)`
-position: relative;
-`
+  position: relative;
+`;
 
 export const Container = styled(Base)`
   flex-direction: column;
   padding: 0px 10px;
-  color: ${props => props.theme.secondary};
+  color: ${(props) => props.theme.secondary};
   border-radius: 8px;
   background-color: ${(props) => props.theme.primary};
 `;
@@ -19,7 +19,8 @@ export const CurrentlySelectedCoinContainer = styled(Base)`
 `;
 
 export const CurrentlySelectedCoinName = styled.div`
-padding: 0px 4px;`
+  padding: 0px 4px;
+`;
 
 export const ListContainer = styled(Base)`
   display: ${(props) => (props.toggled ? "flex" : "none")};

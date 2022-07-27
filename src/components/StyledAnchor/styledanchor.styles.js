@@ -33,8 +33,7 @@ export const Link = styled.a`
   color: ${(props) => props.theme.secondary};
 `;
 
-export const TooltipContainer = styled.div`
-  display: flex;
+export const TooltipContainer = styled(Base)`
   align-items: center;
   justify-content: center;
   position: absolute;

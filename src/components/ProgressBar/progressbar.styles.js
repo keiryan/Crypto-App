@@ -5,7 +5,6 @@ export const OutsideBar = styled(Base)`
   height: 10px;
   flex: 1;
   width: ${(props) => props.overrideWidth || "50px"};
-  /* background-color: #2172E5; */
   background-color: ${(props) => props.theme.progressBar.background};
   border: none;
   border-radius: 8px;

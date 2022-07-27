@@ -10,3 +10,4 @@ export { Dropdown } from './Dropdown';
 export { AbbreviatedNumber } from './NumberAbbreviator';
 export { StyledAnchor } from './StyledAnchor';
 export { ConversionBar } from './ConversionBar';
+export { RangeSelector } from './RangeSelector';

@@ -38,4 +38,5 @@ export const SideContainer = styled(Base)`
 `;
 
 export const ThemeContainer = styled.div`
-position: relative;`;
+  position: relative;
+`;
