@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Container,
   CurrentlySelectedCoinContainer,
@@ -5,16 +6,15 @@ import {
   CurrentlySelectedCoinName,
   ListContainer,
   ListItem,
-  Holder,
 } from "./dropdown.styles";
-import React from "react";
+import { SVG } from 'components';
 
 export const List = (props) => {
   return (
     <ListContainer toggled={props.toggled}>
       {props.list.map((element) => {
         return (
-          <ListItem key={Math.random() * 1000000}>{element.name}</ListItem>
+          <ListItem key={Math.random() * 1000000} onClick={props.handleSelect}>{element.name.toUpperCase()}</ListItem>
         );
       })}
     </ListContainer>
@@ -31,23 +31,23 @@ export default class Dropdown extends React.Component {
     this.setState({ toggled: !this.state.toggled });
   };
 
+  handleSelect = () => {
+    this.setState({ toggled: false });
+  }
+
   render() {
     return (
-      <Holder>
         <Container>
           <CurrentlySelectedCoinContainer onClick={this.handleToggle}>
             <IconContainer>
-              <img
-                src="https://www.freeiconspng.com/thumbs/dollar-icon-png/dollar-round-icon--18.png"
-                width="14px"
-                alt=""
-              />
+              
+              <SVG name={'currency'}/>
             </IconContainer>
             <CurrentlySelectedCoinName>USD</CurrentlySelectedCoinName>
           </CurrentlySelectedCoinContainer>
-          <List list={this.props.list} toggled={this.state.toggled} />
+          <List list={this.props.list} toggled={this.state.toggled} handleSelect={this.handleSelect}/>
         </Container>
-      </Holder>
+
     );
   }
 }

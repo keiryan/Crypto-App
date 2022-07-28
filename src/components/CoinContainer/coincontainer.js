@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
+import { useTheme } from "styled-components";
 import {
   TableContainer,
-  HeaderItem,
   Table,
   TableHeaderItem,
   TableItem,
@@ -16,17 +16,14 @@ import {
   LoadMoreButton,
   TableNumberContainer,
   StyledLink,
+  SmallChartContainer,
 } from "./coincontainer.styles";
-import {
-  ProgressBar,
-  CoinChart,
-  CoinNumber,
-  AbbreviatedNumber,
-} from "components";
+import { ProgressBar, CoinNumber, AbbreviatedNumber, Chart } from "components";
 import chartReducer from "../../utils/ChartReducer";
 
-const DynamicRow = (props) => (
-  <>
+const DynamicRow = (props) => {
+  const theme = useTheme();
+  return (<>
     {props.list.map((element, index) => {
       return (
         <TableRow key={Math.random() * 100000000}>
@@ -93,16 +90,19 @@ const DynamicRow = (props) => (
             />
           </TableItem>
           <TableItem>
-            <CoinChart
-              name={element.symbol}
-              data={chartReducer(element.sparkline_in_7d.price)}
-            />
+            <SmallChartContainer>
+              <Chart
+                chartType="SmallLine"
+                data={chartReducer(element.sparkline_in_7d.price)}
+                color={theme.chart.line.small}
+              />
+            </SmallChartContainer>
           </TableItem>
         </TableRow>
       );
     })}
   </>
-);
+);}
 
 export default class CoinContainer extends React.Component {
   state = {
@@ -125,16 +125,27 @@ export default class CoinContainer extends React.Component {
     this.getData();
   };
 
+  componentWillUnmount() {
+    this.setState({
+      coinBank: [],
+    });
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.page !== this.state.page) {
+      this.getData();
+    }
+  }
+
   nextPage = () => {
     const newValue = this.state.page + 1;
     this.setState({ page: newValue, isLoading: true });
-    this.getData();
   };
 
   render() {
     return (
       <TableContainer>
-        <Loading loading={this.state.isLoading}>Loading...</Loading>
+        <Loading loading={this.state.isLoading ? 1 : 0}>Loading...</Loading>
         <Table>
           <thead>
             <tr>

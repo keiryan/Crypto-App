@@ -82,3 +82,9 @@ export const LoadMoreButton = styled.div`
     color: orange;
   }
 `;
+
+export const SmallChartContainer = styled.div`
+  max-width: 100px;
+  height: 40px;
+  margin: 0 auto;
+`;

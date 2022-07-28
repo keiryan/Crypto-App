@@ -8,6 +8,7 @@ export const Container = styled.div`
   padding: 20px;
   margin: 20px 0px;
   position: relative;
+  border: 3px solid ${(props) => props.theme.quinary};
 `;
 
 export const ChartContainerText = styled(Base)`

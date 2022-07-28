@@ -11,7 +11,6 @@ const StyledButton = (props) => {
     return (
       <ButtonContainer key={Math.random() * 10000000}>
         <Button
-        //   key={Math.random() * 10000000}
           selected={props.range === element.value}
           onClick={props.handleClick}
           id={element.id}

@@ -1,16 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { useParams } from "react-router-dom";
 import {
   CoinName,
@@ -43,23 +32,12 @@ import {
   StyledAnchor,
   ConversionBar,
   RangeSelector,
+  Chart,
 } from "components";
-
-import { chartLocator } from "../../utils/ChartLegend";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 function WithRouter(props) {
   const params = useParams();
   const Component = props.component;
-
   return <Component param={params} />;
 }
 
@@ -118,26 +96,6 @@ class Coin extends React.Component {
   }
 
   render() {
-    const chartType = chartLocator("BottomLine");
-    const config = !this.state.loading && {
-      data: {
-        labels: this.state.chart.data.prices.map(
-          (element, index) => index + 1
-        ),
-        datasets: [
-          {
-            ...chartType.config.data.datasets[0],
-            label: "",
-            data: this.state.chart.data.prices.map(
-              (element, index) => element[1]
-            ),
-          },
-        ],
-      },
-      options: {
-        ...chartType.config.options,
-      },
-  }
     return (
       <>
       <Container>
@@ -280,10 +238,7 @@ class Coin extends React.Component {
       </Container>
       <CoinChartContainer>
           {!this.state.loading && (
-            <Line
-              data={config.data}
-              options={config.options}
-            />
+            <Chart chartType='BottomLine' data={this.state.chart.data.prices} />
           )}
         </CoinChartContainer>
       </>
