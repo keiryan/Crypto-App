@@ -48,10 +48,10 @@ code {
 `;
 
 const list = [
-  { name: "Bitcoin" },
-  { name: "Etherium" },
-  { name: "Cardano" },
-  { name: "Doge" },
+  { name: "btc" },
+  { name: "eth" },
+  { name: "ada" },
+  { name: "doge" },
 ];
 
 const Theme = {
@@ -64,18 +64,39 @@ const Theme = {
     color: "#fff",
     background: "#2172E5",
   },
+  chart: {
+    bars: '#2172E5',
+    line: {
+      large: '#FF6384',
+      small: '#FF6384',
+    },
+  },
+  number: {
+    up: 'lime',
+    down: 'red',
+  }
 };
 
-
 const InvertTheme = {
-  primary: "#A57548",
+  primary: "#C1D7AE",
   secondary: "#000",
   tertiary: "#EBEBEB",
   quaternary: "#3A6EA5",
-  quinary: "#033758",
+  quinary: "#8CC084",
   progressBar: {
-    color: "#82DDF0",
-    background: "#5296A5",
+    color: "#FFCAB1",
+    background: "#E8B8A1",
+  },
+  chart: {
+    bars: '#2172E5',
+    line: {
+      large: '#F7B394',
+      small: '#8CC084',
+    },
+  },
+  number: {
+    up: '#649200',
+    down: '#FF2C53',
   }
 }
 

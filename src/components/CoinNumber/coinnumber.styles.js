@@ -12,6 +12,7 @@ export const IconContainer = styled(Base)`
 `;
 
 export const Number = styled.div`
-  color: ${(props) => (props.number > 0 ? "lime" : "red")};
+  color: ${(props) => (props.number > 0 ? props.theme.number.up : props.theme.number.down)};
   text-align: center;
+  font-weight: bold;
 `;

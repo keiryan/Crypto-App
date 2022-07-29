@@ -8,10 +8,3 @@ align-items: center;
 padding: 40px 0px;`
 
 
-export const LargeChartsContainer = styled(Base)`
-width: 100%;
-justify-content: space-between;`
-
-export const Spacer = styled.div`
-width: 4%;`
-
