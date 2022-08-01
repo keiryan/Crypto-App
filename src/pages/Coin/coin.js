@@ -86,6 +86,10 @@ class Coin extends React.Component {
     if (prevState.chart.timeFrame !== this.state.chart.timeFrame) {
       this.getChartData()
     }
+
+    if (prevProps.param.id !== this.props.param.id) {
+      this.getData();
+    }
   }
 
   handleTimeFrame = (timeFrame) => {

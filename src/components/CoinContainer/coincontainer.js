@@ -23,86 +23,92 @@ import chartReducer from "../../utils/ChartReducer";
 
 const DynamicRow = (props) => {
   const theme = useTheme();
-  return (<>
-    {props.list.map((element, index) => {
-      return (
-        <TableRow key={Math.random() * 100000000}>
-          <TableItem>{index + 1}</TableItem>
-          <TableItem>
-            <StyledLink to={`/coin/${element.id}`}>
-              <CoinNameContainer>
-                <CoinIcon src={element.image} alt={element.coinName} />
-                <CoinName>{element.name}</CoinName>{" "}
-                <div style={{ color: "#6188FF" }}>
-                  ({element.symbol.toUpperCase()})
-                </div>
-              </CoinNameContainer>
-            </StyledLink>
-          </TableItem>
-          <TableItem>${element.current_price}</TableItem>
+  return (
+    <>
+      {props.list.map((element, index) => {
+        return (
+          <TableRow key={element.name}>
+            <TableItem>{index + 1}</TableItem>
+            <TableItem>
+              <StyledLink to={`/coin/${element.id}`}>
+                <CoinNameContainer>
+                  <CoinIcon src={element.image} alt={element.coinName} />
+                  <CoinName>{element.name}</CoinName>{" "}
+                  <div style={{ color: "#6188FF" }}>
+                    ({element.symbol.toUpperCase()})
+                  </div>
+                </CoinNameContainer>
+              </StyledLink>
+            </TableItem>
+            <TableItem>${element.current_price}</TableItem>
 
-          <TableNumber number={element?.price_change_percentage_1h_in_currency}>
-            <TableNumberContainer>
-              <CoinNumber
-                number={element?.price_change_percentage_1h_in_currency}
-                abbr={true}
-              />
-            </TableNumberContainer>
-          </TableNumber>
+            <TableNumber
+              number={element?.price_change_percentage_1h_in_currency}
+            >
+              <TableNumberContainer>
+                <CoinNumber
+                  number={element?.price_change_percentage_1h_in_currency}
+                  abbr={true}
+                />
+              </TableNumberContainer>
+            </TableNumber>
 
-          <TableNumber number={element.market_cap_change_percentage_24h}>
-            <TableNumberContainer>
-              <CoinNumber
-                number={element.market_cap_change_percentage_24h}
-                abbr={true}
-              />
-            </TableNumberContainer>
-          </TableNumber>
+            <TableNumber number={element.market_cap_change_percentage_24h}>
+              <TableNumberContainer>
+                <CoinNumber
+                  number={element.market_cap_change_percentage_24h}
+                  abbr={true}
+                />
+              </TableNumberContainer>
+            </TableNumber>
 
-          <TableNumber number={element.price_change_percentage_7d_in_currency}>
-            <TableNumberContainer>
-              <CoinNumber
-                number={element.price_change_percentage_7d_in_currency}
-                abbr={true}
+            <TableNumber
+              number={element.price_change_percentage_7d_in_currency}
+            >
+              <TableNumberContainer>
+                <CoinNumber
+                  number={element.price_change_percentage_7d_in_currency}
+                  abbr={true}
+                />
+              </TableNumberContainer>
+            </TableNumber>
+            <TableItem>
+              <ProgressContainer>
+                <AbbreviatedNumber number={element.total_volume} />
+                <AbbreviatedNumber number={element.market_cap} />
+              </ProgressContainer>
+              <ProgressBar
+                value={element.total_volume}
+                max={element.market_cap}
+                overrideWidth="100%"
               />
-            </TableNumberContainer>
-          </TableNumber>
-          <TableItem>
-            <ProgressContainer>
-              <AbbreviatedNumber number={element.total_volume} />
-              <AbbreviatedNumber number={element.market_cap} />
-            </ProgressContainer>
-            <ProgressBar
-              value={element.total_volume}
-              max={element.market_cap}
-              overrideWidth="100%"
-            />
-          </TableItem>
-          <TableItem>
-            <ProgressContainer>
-              <AbbreviatedNumber number={element.circulating_supply} />
-              <AbbreviatedNumber number={element.total_supply} />
-            </ProgressContainer>
-            <ProgressBar
-              value={element.circulating_supply}
-              max={element.total_supply}
-              overrideWidth="100%"
-            />
-          </TableItem>
-          <TableItem>
-            <SmallChartContainer>
-              <Chart
-                chartType="SmallLine"
-                data={chartReducer(element.sparkline_in_7d.price)}
-                color={theme.chart.line.small}
+            </TableItem>
+            <TableItem>
+              <ProgressContainer>
+                <AbbreviatedNumber number={element.circulating_supply} />
+                <AbbreviatedNumber number={element.total_supply} />
+              </ProgressContainer>
+              <ProgressBar
+                value={element.circulating_supply}
+                max={element.total_supply}
+                overrideWidth="100%"
               />
-            </SmallChartContainer>
-          </TableItem>
-        </TableRow>
-      );
-    })}
-  </>
-);}
+            </TableItem>
+            <TableItem>
+              <SmallChartContainer>
+                <Chart
+                  chartType="SmallLine"
+                  data={chartReducer(element.sparkline_in_7d.price)}
+                  color={theme.chart.line.small}
+                />
+              </SmallChartContainer>
+            </TableItem>
+          </TableRow>
+        );
+      })}
+    </>
+  );
+};
 
 export default class CoinContainer extends React.Component {
   state = {
@@ -135,7 +141,7 @@ export default class CoinContainer extends React.Component {
     if (prevState.page !== this.state.page) {
       this.getData();
     }
-  }
+  };
 
   nextPage = () => {
     const newValue = this.state.page + 1;

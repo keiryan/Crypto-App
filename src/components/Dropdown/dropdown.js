@@ -14,7 +14,7 @@ export const List = (props) => {
     <ListContainer toggled={props.toggled}>
       {props.list.map((element) => {
         return (
-          <ListItem key={Math.random() * 1000000} onClick={props.handleSelect}>{element.name.toUpperCase()}</ListItem>
+          <ListItem key={element.name} onClick={props.handleSelect}>{element.name.toUpperCase()}</ListItem>
         );
       })}
     </ListContainer>
@@ -40,7 +40,6 @@ export default class Dropdown extends React.Component {
         <Container>
           <CurrentlySelectedCoinContainer onClick={this.handleToggle}>
             <IconContainer>
-              
               <SVG name={'currency'}/>
             </IconContainer>
             <CurrentlySelectedCoinName>USD</CurrentlySelectedCoinName>

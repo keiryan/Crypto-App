@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   ChartContainerText,
@@ -7,24 +6,22 @@ import {
 } from "./chartcontainer.styles";
 import { AbbreviatedNumber, Chart } from "components";
 
-export default class ChartContainer extends React.Component {
-  render() {
+export default function ChartContainer(props) {
     return (
       <Container>
         <ChartContainerText>
-          <Label>{this.props.label}</Label>
+          <Label>{props.label}</Label>
           <NumberContainer>
-            <AbbreviatedNumber number={this.props.headerNumber} />
+            <AbbreviatedNumber number={props.headerNumber} />
           </NumberContainer>
         </ChartContainerText>
         <Chart
-          data={this.props.data}
-          coin={this.props.coin}
-          chartType={this.props.chartType}
+          data={props.data}
+          coin={props.coin}
+          chartType={props.chartType}
           dataIndex={1}
-          color={this.props.color}
+          color={props.color}
         />
       </Container>
     );
-  }
 }
