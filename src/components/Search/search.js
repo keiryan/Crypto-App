@@ -1,4 +1,5 @@
-import React from "react";
+import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -28,63 +29,60 @@ function ListOfCoins(props) {
   );
 }
 
-export default class SearchBar extends React.Component {
-  state = {
-    searchValue: "",
-    list: [],
-    timeOut: false,
-    focused: true,
-  };
+export default function Search() {
+  const [searchValue, setSearchValue] = useState("");
+  const [list, setList] = useState([]);
+  const navigate = useNavigate();
+  let timeOut = false;
 
-  timeOut = false;
-
-  callAPI = async () => {
-    this.timeOut = false;
+  const callAPI = async () => {
+    timeOut = false;
     const data = await axios(
-      `https://crypto-app-server.herokuapp.com/coins/${this.state.searchValue}`
+      `https://crypto-app-server.herokuapp.com/coins/${searchValue}`
     );
-    this.setState({ list: [...data.data] });
+    setList(data.data);
   };
 
-  handleChange = (e) => {
-    this.setState({ searchValue: e.target.value });
-    if (!this.timeOut) {
-      if (this.state.searchValue.length > 0) {
-        this.timeOut = true;
-        setTimeout(this.callAPI, 1000);
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+    if (!timeOut) {
+      if (searchValue.length > 0) {
+        timeOut = true;
+        setTimeout(callAPI, 1000);
       } else {
-        this.setState({ list: [] });
+        setList([]);
       }
     }
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ searchValue: "" });
+    setSearchValue("");
+    navigate(`/coin/${list[0].id}`);
+    clearList();
   };
 
-  clearList = () => {
-    this.setState({ searchValue: "", list: [] });
+  const clearList = () => {
+    setSearchValue("");
+    setList([]);
   };
 
-  render() {
-    return (
-      <>
-        <Container>
-          <IconContainer onClick={this.handleSubmit}>
-            <SVG name="search" />
-          </IconContainer>
-          <SearchForm onSubmit={this.handleSubmit}>
-            <SearchInput
-              onChange={this.handleChange}
-              value={this.state.searchValue}
-              type="text"
-              placeholder="Search"
-            />
-          </SearchForm>
-          <ListOfCoins left={this.clearList} list={this.state.list} clearList={this.clearList} />
-        </Container>
-      </>
-    );
-  }
+  return (
+    <>
+      <Container>
+        <IconContainer onClick={handleSubmit}>
+          <SVG name="search" />
+        </IconContainer>
+        <SearchForm onSubmit={handleSubmit}>
+          <SearchInput
+            onChange={handleChange}
+            value={searchValue}
+            type="text"
+            placeholder="Search"
+          />
+        </SearchForm>
+        <ListOfCoins left={clearList} list={list} clearList={clearList} />
+      </Container>
+    </>
+  );
 }

@@ -1,5 +1,4 @@
 export { Navbar } from './Navbar';
-export { NavBarNotch } from './NavBarNotch';
 export { SearchBar } from './Search';
 export { CoinContainer } from './CoinContainer';
 export { ChartContainer } from './ChartContainer';
@@ -13,3 +12,4 @@ export { ConversionBar } from './ConversionBar';
 export { RangeSelector } from './RangeSelector';
 export { Chart } from './Chart';
 export { LargeChartsContainer } from './LargeChartsContainer';
+export { ThemeContainer } from './ThemeContainer';

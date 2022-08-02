@@ -1,5 +1,5 @@
 import { useTheme } from "styled-components";
-import { Container, Number, IconContainer } from "./coinnumber.styles";
+import { Container, Number, IconContainer, AbbreviatedNumber } from "./coinnumber.styles";
 import { SVG } from "components";
 
 const CoinNumber = (props) => {
@@ -13,9 +13,9 @@ const CoinNumber = (props) => {
         <SVG name={isPositive(props.number)} overrideFill={props.number > 0 ? theme.number.up : theme.number.down}/>
       </IconContainer>
       {props.abbr ? (
-        <abbr title={props.number + "%"}>
+        <AbbreviatedNumber title={props.number + "%"}>
           <Number number={props.number}>{props.number && props.number.toFixed(2)}%</Number>
-        </abbr>
+        </AbbreviatedNumber>
       ) : (
         <Number number={props.number}>{props.number}</Number>
       )}

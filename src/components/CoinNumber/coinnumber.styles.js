@@ -16,3 +16,7 @@ export const Number = styled.div`
   text-align: center;
   font-weight: bold;
 `;
+
+
+export const AbbreviatedNumber = styled.abbr`
+text-decoration: none;`
