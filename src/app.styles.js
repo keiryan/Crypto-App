@@ -10,8 +10,10 @@ export const Container = styled(Base)`
   width: 100vw;
   height: 100vh;
   background-color: ${(props) => props.theme.primary};
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
+  position: relative; 
+  scrollbar-gutter: stable;
 `;
 
 
