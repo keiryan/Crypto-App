@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import {
   Container,
   CurrentlySelectedCoinContainer,
@@ -7,46 +8,69 @@ import {
   ListContainer,
   ListItem,
 } from "./dropdown.styles";
-import { SVG } from 'components';
+import { SVG } from "components";
 
 export const List = (props) => {
   return (
-    <ListContainer toggled={props.toggled}>
+    <ListContainer onMouseLeave={props.clearList} toggled={props.toggled}>
       {props.list.map((element) => {
         return (
-          <ListItem key={element.name} onClick={props.handleSelect}>{element.name.toUpperCase()}</ListItem>
+          <ListItem key={Math.random() * 300000} onClick={() => props.handleSelect(element)}>
+            {element}
+          </ListItem>
         );
       })}
     </ListContainer>
   );
 };
 
-export default class Dropdown extends React.Component {
-  state = {
-    toggled: false,
-    currentCoin: {},
+export default function Dropdown(props) {
+  const [toggled, setToggled] = useState(false);
+  const [currentCoin, setCurrentCoin] = useState(props.defaultCurrency);
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true)
+
+  const handleToggle = () => {
+    setToggled(!toggled);
   };
 
-  handleToggle = () => {
-    this.setState({ toggled: !this.state.toggled });
+  const handleSelect = (coin) => {
+    setCurrentCoin(coin)
+    setToggled(false);
+    props.handleCurrency(coin)
   };
 
-  handleSelect = () => {
-    this.setState({ toggled: false });
-  }
+  const clearList = () => {
+    setToggled(false);
+  };
 
-  render() {
-    return (
-        <Container>
-          <CurrentlySelectedCoinContainer onClick={this.handleToggle}>
-            <IconContainer>
-              <SVG name={'currency'}/>
-            </IconContainer>
-            <CurrentlySelectedCoinName>USD</CurrentlySelectedCoinName>
-          </CurrentlySelectedCoinContainer>
-          <List list={this.props.list} toggled={this.state.toggled} handleSelect={this.handleSelect}/>
-        </Container>
-
+  const getData = async () => {
+    const response = await axios.get(
+      "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
     );
-  }
+    setList(response.data.sort());
+    setLoading(false);
+  };
+
+
+  useEffect(() => {
+      getData();
+  }, []);
+
+  return (
+    <Container>
+      <CurrentlySelectedCoinContainer onClick={handleToggle}>
+        <IconContainer>
+          <SVG name={"currency"} />
+        </IconContainer>
+        {!loading && (<CurrentlySelectedCoinName>{currentCoin.toUpperCase() || list[0].toUpperCase()}</CurrentlySelectedCoinName>)}
+      </CurrentlySelectedCoinContainer>
+      <List
+        clearList={clearList}
+        list={list}
+        toggled={toggled}
+        handleSelect={handleSelect}
+      />
+    </Container>
+  );
 }

@@ -8,6 +8,7 @@ export const TableContainer = styled(Base)`
   width: 100%;
   margin: 20px 0px;
 `;
+
 export const Table = styled.table`
   font-size: 14px;
   width: 100%;
@@ -20,7 +21,7 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const TableRow = styled.tr``;
+export const TableRow = styled.tr.attrs((props) => ({}))``;
 
 export const CoinIcon = styled.img`
   width: 14px;

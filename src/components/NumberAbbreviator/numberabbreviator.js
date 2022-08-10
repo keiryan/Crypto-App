@@ -1,11 +1,41 @@
-import { Container } from "./numberabbreviator.styles";
+import {
+  Container,
+  StandardContainer,
+  Currency,
+} from "./numberabbreviator.styles";
+
+const fiatBank = {
+  usd: "$",
+  eur: "€",
+  gbp: "£",
+  aud: "$",
+};
 
 export default function AbbreviatedNumber(props) {
   let symbol;
-  const fiatSymbol = props.fiat === false ? '' : props.fiat || "$";
+  let fiatSymbol = "";
+  if (props.fiat) {
+    if (props.fiat in fiatBank) {
+      fiatSymbol = fiatBank[props.fiat];
+    } else {
+      fiatSymbol = `${props.fiat}`.toUpperCase();
+    }
+  } else {
+    fiatSymbol = "";
+  }
+
+  if (props.noAbbreviation) {
+    return (
+      <StandardContainer flex={props.flex}>
+        {fiatSymbol.length === 1 && fiatSymbol}
+        {props.number}{" "}
+        <Currency>{fiatSymbol.length > 1 && fiatSymbol.toUpperCase()}</Currency>
+      </StandardContainer>
+    );
+  }
   let finalNumber;
   if (props.number === null) {
-    props.abbr ? finalNumber = "Inf" : finalNumber = "Infinity"
+    props.abbr ? (finalNumber = "Inf") : (finalNumber = "Infinity");
   } else if (props.number === 0) {
     finalNumber = `${fiatSymbol}0`;
   } else {
@@ -44,17 +74,33 @@ export default function AbbreviatedNumber(props) {
     if (formula > 0) {
       const spreadNum = parsedNum.slice(0, formula + 1);
       if (spreadNum.at(-1) > 0) {
-        finalNumber = `${
-          fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)
-        }.${spreadNum.at(-1)}`.concat(symbol);
+        finalNumber =
+          fiatSymbol.length === 1
+            ? `${
+                fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)
+              }.${spreadNum.at(-1)}`.concat(symbol)
+            : `${spreadNum.slice(0, spreadNum.length - 1)}.${spreadNum.at(
+                -1
+              )}`.concat(symbol) + fiatSymbol;
       } else {
-        finalNumber = `${
-          fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)
-        }`.concat(symbol);
+        finalNumber =
+          fiatSymbol.length === 1
+            ? `${fiatSymbol + spreadNum.slice(0, spreadNum.length - 1)}`.concat(
+                symbol
+              )
+            : `${spreadNum.slice(0, spreadNum.length - 1)}`.concat(symbol) +
+              fiatSymbol;
       }
     } else {
-      finalNumber = `${fiatSymbol + parsedNum.slice(0, 3)}${symbol}`;
+      fiatSymbol.length === 1
+        ? (finalNumber = `${fiatSymbol + parsedNum.slice(0, 3)}${symbol}`)
+        : (finalNumber = `${parsedNum.slice(0, 3)} ${fiatSymbol}`);
     }
   }
-  return <Container title={`${fiatSymbol}${props.number}`}>{finalNumber} {props.crypto && props.crypto.toUpperCase()}</Container>;
+
+  return (
+    <Container title={`${fiatSymbol}${props.number}`}>
+      {finalNumber} {props.crypto && props.crypto.toUpperCase()}
+    </Container>
+  );
 }

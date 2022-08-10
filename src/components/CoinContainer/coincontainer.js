@@ -1,5 +1,5 @@
-import React from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 import {
   TableContainer,
@@ -40,7 +40,15 @@ const DynamicRow = (props) => {
                 </CoinNameContainer>
               </StyledLink>
             </TableItem>
-            <TableItem>${element.current_price}</TableItem>
+            <TableItem>
+              <AbbreviatedNumber
+                number={element.current_price}
+                fiat={props.fiat}
+                abbr={false}
+                noAbbreviation={true}
+                flex={'center'}
+              />
+            </TableItem>
 
             <TableNumber
               number={element?.price_change_percentage_1h_in_currency}
@@ -74,8 +82,14 @@ const DynamicRow = (props) => {
             </TableNumber>
             <TableItem>
               <ProgressContainer>
-                <AbbreviatedNumber number={element.total_volume} />
-                <AbbreviatedNumber number={element.market_cap} />
+                <AbbreviatedNumber
+                  number={element.total_volume}
+                  fiat={props.fiat}
+                />
+                <AbbreviatedNumber
+                  number={element.market_cap}
+                  fiat={props.fiat}
+                />
               </ProgressContainer>
               <ProgressBar
                 value={element.total_volume}
@@ -85,8 +99,14 @@ const DynamicRow = (props) => {
             </TableItem>
             <TableItem>
               <ProgressContainer>
-                <AbbreviatedNumber number={element.circulating_supply} />
-                <AbbreviatedNumber number={element.total_supply} />
+                <AbbreviatedNumber
+                  number={element.circulating_supply}
+                  fiat={props.fiat}
+                />
+                <AbbreviatedNumber
+                  number={element.total_supply}
+                  fiat={props.fiat}
+                />
               </ProgressContainer>
               <ProgressBar
                 value={element.circulating_supply}
@@ -110,73 +130,67 @@ const DynamicRow = (props) => {
   );
 };
 
-export default class CoinContainer extends React.Component {
-  state = {
-    page: 1,
-    isLoading: true,
-    coinBank: [],
-  };
+export default function CoinContainer(props) {
+  const [coinBank, setCoinBank] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [resultsPerPage, setResultsPerPage] = useState(100);
 
-  getData = async () => {
+  const getData = async (replace) => {
+    replace && setPage(1);
     const data = await axios(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${this.state.page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${props.currency}&order=market_cap_desc&per_page=${resultsPerPage}&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
-    this.setState({
-      coinBank: [...this.state.coinBank, ...data.data],
-      isLoading: false,
-    });
-  };
-
-  componentDidMount = () => {
-    this.getData();
-  };
-
-  componentWillUnmount() {
-    this.setState({
-      coinBank: [],
-    });
-  }
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevState.page !== this.state.page) {
-      this.getData();
+    if (page === 1) {
+      setCoinBank(data.data);
+    } else {
+      console.error("Added");
+      setCoinBank([...coinBank, ...data.data]);
     }
+    setIsLoading(false);
   };
 
-  nextPage = () => {
-    const newValue = this.state.page + 1;
-    this.setState({ page: newValue, isLoading: true });
+  const nextPage = async () => {
+    const newValue = page + 1;
+    setPage(newValue);
   };
 
-  render() {
-    return (
-      <TableContainer>
-        <Loading loading={this.state.isLoading ? 1 : 0}>Loading...</Loading>
-        <Table>
-          <thead>
-            <tr>
-              <TableHeaderItem>#</TableHeaderItem>
-              <TableHeaderItem>Name</TableHeaderItem>
-              <TableHeaderItem>Price</TableHeaderItem>
-              <TableHeaderItem>1h%</TableHeaderItem>
-              <TableHeaderItem>24h%</TableHeaderItem>
-              <TableHeaderItem>7d%</TableHeaderItem>
-              <TableHeaderItem>24h Volume / Market Cap</TableHeaderItem>
-              <TableHeaderItem>Circulating / Total Supply</TableHeaderItem>
-              <TableHeaderItem>Last 7d</TableHeaderItem>
-            </tr>
-          </thead>
-          <tbody>
-            <DynamicRow list={this.state.coinBank} />
-          </tbody>
-        </Table>
-        <LoadMoreButton
-          onClick={this.nextPage}
-          length={this.state.coinBank.length}
-        >
-          Load More
-        </LoadMoreButton>
-      </TableContainer>
-    );
-  }
+  useEffect(() => {
+    getData(false);
+  }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [props.currency]);
+
+  useEffect(() => {
+    getData(false);
+  }, [page]);
+
+  return (
+    <TableContainer>
+      <Loading loading={isLoading ? 1 : 0}>Loading...</Loading>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeaderItem>#</TableHeaderItem>
+            <TableHeaderItem>Name</TableHeaderItem>
+            <TableHeaderItem>Price</TableHeaderItem>
+            <TableHeaderItem>1h%</TableHeaderItem>
+            <TableHeaderItem>24h%</TableHeaderItem>
+            <TableHeaderItem>7d%</TableHeaderItem>
+            <TableHeaderItem>24h Volume / Market Cap</TableHeaderItem>
+            <TableHeaderItem>Circulating / Total Supply</TableHeaderItem>
+            <TableHeaderItem>Last 7d</TableHeaderItem>
+          </tr>
+        </thead>
+        <tbody>
+          {!isLoading && <DynamicRow list={coinBank} fiat={props.currency} />}
+        </tbody>
+      </Table>
+      <LoadMoreButton onClick={nextPage} length={coinBank.length}>
+        Load More
+      </LoadMoreButton>
+    </TableContainer>
+  );
 }

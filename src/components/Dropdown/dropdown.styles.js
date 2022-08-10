@@ -34,6 +34,8 @@ export const ListContainer = styled(Base)`
   right: 0px;
   padding: 10px 10px;
   border-radius: 8px;
+  height: 250px;
+  overflow-y: auto;
 `;
 
 export const ListItem = styled.div`

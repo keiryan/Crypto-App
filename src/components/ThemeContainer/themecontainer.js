@@ -1,22 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { SVG } from "components";
 import { Container } from "./themecontainer.styles";
 
-export default class ThemeContainer extends React.Component {
-  state = {
-    toggled: false,
+export default function ThemeContainer(props) {
+  const [toggled, setToggled] = useState(false);
+
+  const handleClick = () => {
+    setToggled(!toggled);
+    props.toggleTheme();
   };
 
-  handleClick = () => {
-    this.setState({ toggled: !this.state.toggled });
-    this.props.toggleTheme()
-  };
-
-  render() {
-    return (
-      <Container onClick={this.handleClick}>
-        <SVG name={this.state.toggled ? "moon" : "sun"} />
-      </Container>
-    );
-  }
+  return (
+    <Container onClick={handleClick}>
+      <SVG name={toggled ? "moon" : "sun"} />
+    </Container>
+  );
 }

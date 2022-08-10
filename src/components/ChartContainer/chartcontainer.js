@@ -12,7 +12,7 @@ export default function ChartContainer(props) {
         <ChartContainerText>
           <Label>{props.label}</Label>
           <NumberContainer>
-            <AbbreviatedNumber number={props.headerNumber} />
+            <AbbreviatedNumber number={props.headerNumber} fiat={props.fiat}/>
           </NumberContainer>
         </ChartContainerText>
         <Chart
