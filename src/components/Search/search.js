@@ -1,6 +1,6 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState, } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   SearchInput,
@@ -29,10 +29,10 @@ function ListOfCoins(props) {
   );
 }
 
-export default function Search() {
+export default function SearchBar() {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [list, setList] = useState([]);
-  const navigate = useNavigate();
   let timeOut = false;
 
   const callAPI = async () => {
@@ -40,7 +40,7 @@ export default function Search() {
     const data = await axios(
       `https://crypto-app-server.herokuapp.com/coins/${searchValue}`
     );
-    setList(data.data);
+    setList([...data.data]);
   };
 
   const handleChange = (e) => {

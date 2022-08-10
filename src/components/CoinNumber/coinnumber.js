@@ -13,7 +13,7 @@ const CoinNumber = (props) => {
         <SVG name={isPositive(props.number)} overrideFill={props.number > 0 ? theme.number.up : theme.number.down}/>
       </IconContainer>
       {props.abbr ? (
-        <AbbreviatedNumber title={props.number + "%"}>
+        <AbbreviatedNumber title={props.number + "%"} fiat={props.fiat}>
           <Number number={props.number}>{props.number && props.number.toFixed(2)}%</Number>
         </AbbreviatedNumber>
       ) : (

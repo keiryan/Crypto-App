@@ -1,54 +1,50 @@
-import React from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { ChartContainer } from "components";
 import { Container, Spacer } from "./largechartscontainer.styles";
 
-function ChartsWithTheme(props) {
+export default function LargeChartsContainer(props) {
+  const [coin, setCoin] = useState({});
+  const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  return (
-    <>
-      <ChartContainer
-        coin={props.coin}
-        chartType={"Line"}
-        label={"Price"}
-        data={props.coin.prices}
-        headerNumber={props.coin.prices.at(-1)[1]}
-      />
-      <Spacer />
-      <ChartContainer
-        coin={props.coin}
-        chartType={"Bar"}
-        label={"Volume 24h"}
-        data={props.coin.total_volumes}
-        headerNumber={props.coin.prices.at(-1)[1]}
-        color={theme.chart.bars}
-      />
-    </>
-  );
-}
 
-export default class LargeChartsContainer extends React.Component {
-  state = {
-    loading: true,
-    coin: {},
-  };
-
-  getData = async () => {
+  const getData = async () => {
     const data = await axios(
       "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
     );
-    this.setState({ loading: false, coin: data.data });
+    setCoin(data.data);
+    setLoading(false);
   };
 
-  componentDidMount() {
-    this.getData();
-  }
-  render() {
-    return (
-      <Container>
-        {!this.state.loading && <ChartsWithTheme coin={this.state.coin} />}
-      </Container>
-    );
-  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <Container>
+      {!loading && (
+        <>
+          <ChartContainer
+            coin={coin}
+            chartType={"Line"}
+            label={"Price"}
+            data={coin.prices}
+            headerNumber={coin.prices.at(-1)[1]}
+            fiat={props.currency}
+          />
+          <Spacer />
+          <ChartContainer
+            coin={coin}
+            chartType={"Bar"}
+            label={"Volume 24h"}
+            data={coin.total_volumes}
+            headerNumber={coin.prices.at(-1)[1]}
+            color={theme.chart.bars}
+            fiat={props.currency}
+          />
+        </>
+      )}
+    </Container>
+  );
 }

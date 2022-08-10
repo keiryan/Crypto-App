@@ -11,9 +11,12 @@ export const OutsideBar = styled(Base)`
   overflow: hidden;
 `;
 
-export const InsideBar = styled.div`
-  width: ${(props) => (props.value / props.max) * 100}%;
-  height: 100%;
+export const InsideBar = styled.div.attrs(({ width }) => ({
+  style: {
+    width,
+  },
+}))`
   background-color: ${(props) => props.theme.progressBar.color};
+  height: 100%;
   border-radius: 8px;
 `;

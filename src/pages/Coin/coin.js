@@ -1,5 +1,5 @@
-import React from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   CoinName,
@@ -35,110 +35,101 @@ import {
   Chart,
 } from "components";
 
-function WithRouter(props) {
+export default function Coin(props) {
   const params = useParams();
-  const Component = props.component;
-  return <Component param={params} />;
-}
+  const [coin, setCoin] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [chart, setChart] = useState({
+    timeFrame: 7,
+    data: {},
+  });
 
-class Coin extends React.Component {
-  state = {
-    coin: {},
-    loading: true,
-    config: {
-      data: {},
-      options: {},
-    },
-    chart: {
-      timeFrame: 7,
-      data: {},
-    }
-  };
-
-  getData = async () => {
+  const getData = async () => {
     const data = await axios(
-      `https://api.coingecko.com/api/v3/coins/${this.props.param.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`
+      `https://api.coingecko.com/api/v3/coins/${params.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`
     );
     const chartData = await axios(
-      `https://api.coingecko.com/api/v3/coins/${this.props.param.id}/market_chart?vs_currency=usd&days=${this.state.chart.timeFrame}&interval=daily`);
+      `https://api.coingecko.com/api/v3/coins/${params.id}/market_chart?vs_currency=${props.fiat}&days=${chart.timeFrame}&interval=daily`
+    );
 
-    this.setState({
-      loading: false,
-      coin: data.data,
-      chart: {
-        ...this.state.chart,
-        data: chartData.data,
-      }
-    });
+    setCoin(data.data);
+    setChart({ ...chart, data: chartData.data });
+    setLoading(false);
   };
 
-  getChartData = async () => {
+  const getChartData = async () => {
     const chartData = await axios(
-      `https://api.coingecko.com/api/v3/coins/${this.props.param.id}/market_chart?vs_currency=usd&days=${this.state.chart.timeFrame}&interval=daily`);
-      this.setState({chart: {...this.state.chart, data: chartData.data}});
-  }
+      `https://api.coingecko.com/api/v3/coins/${params.id}/market_chart?vs_currency=${props.fiat}&days=${chart.timeFrame}&interval=daily`
+    );
+    setChart({ ...chart, data: chartData.data });
+  };
 
-  async componentDidMount() {
-    this.getData();
-  }1
+  const handleTimeFrame = (timeFrame) => {
+    setChart({ ...chart, timeFrame });
+  };
 
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevState.chart.timeFrame !== this.state.chart.timeFrame) {
-      this.getChartData()
-    }
+  useEffect(() => {
+    getData();
+  }, [params.id, props.fiat]);
 
-    if (prevProps.param.id !== this.props.param.id) {
-      this.getData();
-    }
-  }
+  useEffect(() => {
+    getChartData();
+  }, [chart.timeFrame, props.fiat]);
 
-  handleTimeFrame = (timeFrame) => {
-    this.setState({chart:{
-      ...this.state.chart,
-      timeFrame: timeFrame
-    }});
-  }
-
-  render() {
-    return (
-      <>
+  return (
+    <>
       <Container>
         <h1 style={{ color: "white", textDecoration: "underline" }}>Summary</h1>
         <TopContainers>
           <SmallDataContainer>
-            <CoinProfile src={this.state.coin?.image?.large} />
+            <CoinProfile src={coin?.image?.large} />
             <CoinNameContainer>
-              <CoinName>{this.state.coin?.name}</CoinName>
-              <CoinSymbol>({this.state.coin?.symbol})</CoinSymbol>
+              <CoinName>{coin?.name}</CoinName>
+              <CoinSymbol>({coin?.symbol})</CoinSymbol>
             </CoinNameContainer>
-            <StyledAnchor link={this.state.coin?.links?.homepage?.[0]} />
+            <StyledAnchor link={coin?.links?.homepage?.[0]} />
           </SmallDataContainer>
           <DataContainer>
             <CoinPrice>
-              ${this.state.coin?.market_data?.current_price?.usd}
+              <AbbreviatedNumber
+                number={coin?.market_data?.current_price?.[props.fiat]}
+                fiat={props.fiat}
+                noAbbreviation={true}
+              />
             </CoinPrice>
             <CoinNumber
               number={
-                this.state.coin?.market_data
-                  ?.price_change_percentage_24h_in_currency.usd
+                coin?.market_data?.price_change_percentage_24h_in_currency?.[
+                  props.fiat
+                ]
               }
             />
-
             <LargeIconContainer>
               <SVG name="stack" />
             </LargeIconContainer>
-
             <AllTimeContainer>
               <Section>
                 <ListHeader>ATH:</ListHeader>
                 <List>
-                  <ListItem>${this.state.coin?.market_data?.ath?.usd}</ListItem>
                   <ListItem>
-                    ${this.state.coin?.market_data?.ath_change_percentage?.usd}
+                    <AbbreviatedNumber
+                      number={coin?.market_data?.ath?.[props.fiat]}
+                      fiat={props.fiat}
+                      noAbbreviation={true}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <AbbreviatedNumber
+                      number={
+                        coin?.market_data?.ath_change_percentage?.[props.fiat]
+                      }
+                      fiat={props.fiat}
+                      noAbbreviation={true}
+                    />
                   </ListItem>
                   <ListItem>
                     {simpleDateParser(
-                      this.state.coin?.market_data?.ath_date?.usd
+                      coin?.market_data?.ath_date?.[props.fiat]
                     )}
                   </ListItem>
                 </List>
@@ -146,13 +137,25 @@ class Coin extends React.Component {
               <Section>
                 <ListHeader>ATL:</ListHeader>
                 <List>
-                  <ListItem>${this.state.coin?.market_data?.atl?.usd}</ListItem>
                   <ListItem>
-                    ${this.state.coin?.market_data?.atl_change_percentage?.usd}
+                    <AbbreviatedNumber
+                      number={coin?.market_data?.atl?.[props.fiat]}
+                      fiat={props.fiat}
+                      noAbbreviation={true}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <AbbreviatedNumber
+                      number={
+                        coin?.market_data?.atl_change_percentage?.[props.fiat]
+                      }
+                      fiat={props.fiat}
+                      noAbbreviation={true}
+                    />
                   </ListItem>
                   <ListItem>
                     {simpleDateParser(
-                      this.state.coin?.market_data?.atl_date?.usd
+                      coin?.market_data?.atl_date?.[props.fiat]
                     )}
                   </ListItem>
                 </List>
@@ -165,11 +168,13 @@ class Coin extends React.Component {
                 <ListItem>
                   <NumberContainer>
                     <DataType>Market Cap:</DataType>$
-                    {this.state.coin?.market_data?.market_cap?.usd}
+                    {coin?.market_data?.market_cap?.[props.fiat]}
                     <CoinNumber
                       number={
-                        this.state.coin?.market_data
-                          ?.market_cap_change_percentage_24h_in_currency?.usd
+                        coin?.market_data
+                          ?.market_cap_change_percentage_24h_in_currency?.[
+                          props.fiat
+                        ]
                       }
                       abbr={true}
                     />
@@ -180,9 +185,9 @@ class Coin extends React.Component {
                     <DataType>Fully Diluted Valuation:</DataType>
                     <AbbreviatedNumber
                       number={
-                        this.state.coin?.market_data?.fully_diluted_valuation
-                          ?.usd
+                        coin?.market_data?.fully_diluted_valuation?.[props.fiat]
                       }
+                      fiat={props.fiat}
                     />
                   </NumberContainer>
                 </ListItem>
@@ -195,7 +200,8 @@ class Coin extends React.Component {
                   <NumberContainer>
                     <DataType color="lime">Total Volume:</DataType>
                     <AbbreviatedNumber
-                      number={this.state.coin?.market_data?.total_volume?.usd}
+                      number={coin?.market_data?.total_volume?.[props.fiat]}
+                      fiat={props.fiat}
                     />
                   </NumberContainer>
                 </ListItem>
@@ -205,8 +211,8 @@ class Coin extends React.Component {
                     <DataType>Circulating Supply:</DataType>
                     <AbbreviatedNumber
                       fiat={false}
-                      number={this.state.coin?.market_data?.circulating_supply}
-                      crypto={this.state.coin?.symbol}
+                      number={coin?.market_data?.circulating_supply}
+                      crypto={coin?.symbol}
                     />
                   </NumberContainer>
                 </ListItem>
@@ -215,9 +221,9 @@ class Coin extends React.Component {
                   <NumberContainer>
                     <DataType color="#2172E5">Max Supply:</DataType>
                     <AbbreviatedNumber
-                      fiat={false}
-                      number={this.state.coin?.market_data?.max_supply}
-                      crypto={this.state.coin?.symbol}
+                      fiat={props.fiat}
+                      number={coin?.market_data?.max_supply}
+                      crypto={coin?.symbol}
                     />
                   </NumberContainer>
                 </ListItem>
@@ -226,30 +232,27 @@ class Coin extends React.Component {
           </DataContainer>
         </TopContainers>
         <Description
-          dangerouslySetInnerHTML={{ __html: this.state.coin?.description?.en }}
+          dangerouslySetInnerHTML={{
+            __html: coin?.description?.en,
+          }}
         />
-        <RangeSelector handleTimeFrame={this.handleTimeFrame}/>
+        <RangeSelector handleTimeFrame={handleTimeFrame} />
         <CoinConversionContainer>
-          {this.state.loading && (<ConversionBar
-            fiat={{
-              name: "USD",
-              value: this.state.coin?.market_data?.current_price?.usd,
-              currentPrice: this.state.coin?.market_data?.current_price?.usd,
-            }}
-            crypto={this.state.coin?.symbol}
-          />)}
+          {loading && (
+            <ConversionBar
+              fiat={{
+                name: "USD",
+                value: coin?.market_data?.current_price?.[props.fiat],
+                currentPrice: coin?.market_data?.current_price?.[props.fiat],
+              }}
+              crypto={coin?.symbol}
+            />
+          )}
         </CoinConversionContainer>
       </Container>
       <CoinChartContainer>
-          {!this.state.loading && (
-            <Chart chartType='BottomLine' data={this.state.chart.data.prices} />
-          )}
-        </CoinChartContainer>
-      </>
-    );
-  }
+        {!loading && <Chart chartType="BottomLine" data={chart.data.prices} />}
+      </CoinChartContainer>
+    </>
+  );
 }
-
-const Component = () => <WithRouter component={Coin} />;
-
-export default Component;

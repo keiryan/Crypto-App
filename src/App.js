@@ -1,5 +1,5 @@
 import "App.css";
-import React from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { Container } from "app.styles";
@@ -51,13 +51,6 @@ code {
 }
 `;
 
-const list = [
-  { name: "btc" },
-  { name: "eth" },
-  { name: "ada" },
-  { name: "doge" },
-];
-
 const Theme = {
   primary: "#1F2128",
   secondary: "#ffffff",
@@ -104,42 +97,43 @@ const InvertTheme = {
   },
 };
 
-export default class App extends React.Component {
-  state = {
-    theme: Theme,
+export default function App() {
+  const [theme, setTheme] = useState(Theme);
+  const [currency, setCurrency] = useState("usd");
+  const toggleTheme = () => {
+    setTheme(theme === Theme ? InvertTheme : Theme);
   };
 
-  toggleTheme = () => {
-    this.setState({
-      theme: this.state.theme === Theme ? InvertTheme : Theme,
-    });
+  const handleCurrency = (fiat) => {
+    setCurrency(fiat);
   };
-  render() {
-    return (
-      <ThemeProvider theme={this.state.theme}>
-        <BrowserRouter>
-          <Container>
-            <GlobalStyle />
-            <Navbar
-              firstCoin={{ percentage: 44 }}
-              secondCoin={{ percentage: 21 }}
-              coinValue={Math.random() * 10_000_000_000_000}
-              marketCap={Math.random() * 10_000_000_000_000}
-              totalAmountOfCoins={(Math.random() * 10000) | 0}
-              exchange={(Math.random() * 1000) | 0}
-              coinList={list}
-              toggleTheme={this.toggleTheme}
-            />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="portfolio" element={<Portfolio />} />
-              <Route path="coinpage" element={<CoinPage />} />
-              <Route path="coin/:id" element={<Coin />} />
-              <Route path="*" element={<Lost />} />
-            </Routes>
-          </Container>
-        </BrowserRouter>
-      </ThemeProvider>
-    );
-  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Container>
+          <GlobalStyle />
+          <Navbar
+            defaultCurrency={currency}
+            handleCurrency={handleCurrency}
+            firstCoin={{ percentage: 44 }}
+            secondCoin={{ percentage: 21 }}
+            coinValue={Math.random() * 10_000_000_000_000}
+            marketCap={Math.random() * 10_000_000_000_000}
+            totalAmountOfCoins={(Math.random() * 10000) | 0}
+            exchange={(Math.random() * 1000) | 0}
+            toggleTheme={toggleTheme}
+            fiat={currency}
+          />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="portfolio" element={<Portfolio />} />
+            <Route path="coinpage" element={<CoinPage currency={currency} />} />
+            <Route path="coin/:id" element={<Coin fiat={currency} />} />
+            <Route path="*" element={<Lost />} />
+          </Routes>
+        </Container>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
