@@ -12,8 +12,9 @@ export const Container = styled(Base)`
   background-color: ${(props) => props.theme.primary};
   overflow-y: scroll;
   overflow-x: hidden;
-  position: relative; 
-  scrollbar-gutter: stable;
+  padding-top: 6%;
+  position: relative;
+  z-index: 0;
 `;
 
 

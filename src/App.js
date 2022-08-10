@@ -4,9 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { Container } from "app.styles";
 import { Home, Portfolio, CoinPage, Coin, Lost } from "pages";
-import { NavBarNotch, Navbar } from "components";
+import { Navbar } from "components";
 
 const GlobalStyle = createGlobalStyle`
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,6 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: ${(props) => props.theme.quaternary};
+  
 }
 
 code {
@@ -27,7 +29,9 @@ code {
 }
 
 ::-webkit-scrollbar {
+  position: absolute;
   width: 10px;
+  z-index: 999;
 }
 
 /* Track */
@@ -65,16 +69,16 @@ const Theme = {
     background: "#2172E5",
   },
   chart: {
-    bars: '#2172E5',
+    bars: "#2172E5",
     line: {
-      large: '#FF6384',
-      small: '#FF6384',
+      large: "#FF6384",
+      small: "#FF6384",
     },
   },
   number: {
-    up: 'lime',
-    down: 'red',
-  }
+    up: "lime",
+    down: "red",
+  },
 };
 
 const InvertTheme = {
@@ -88,17 +92,17 @@ const InvertTheme = {
     background: "#E8B8A1",
   },
   chart: {
-    bars: '#2172E5',
+    bars: "#2172E5",
     line: {
-      large: '#F7B394',
-      small: '#8CC084',
+      large: "#F7B394",
+      small: "#8CC084",
     },
   },
   number: {
-    up: '#649200',
-    down: '#FF2C53',
-  }
-}
+    up: "#649200",
+    down: "#FF2C53",
+  },
+};
 
 export default class App extends React.Component {
   state = {
@@ -116,14 +120,15 @@ export default class App extends React.Component {
         <BrowserRouter>
           <Container>
             <GlobalStyle />
-            <Navbar coinList={list} toggleTheme={this.toggleTheme} />
-            <NavBarNotch
+            <Navbar
               firstCoin={{ percentage: 44 }}
               secondCoin={{ percentage: 21 }}
               coinValue={Math.random() * 10_000_000_000_000}
               marketCap={Math.random() * 10_000_000_000_000}
               totalAmountOfCoins={(Math.random() * 10000) | 0}
               exchange={(Math.random() * 1000) | 0}
+              coinList={list}
+              toggleTheme={this.toggleTheme}
             />
             <Routes>
               <Route path="/" element={<Home />} />
