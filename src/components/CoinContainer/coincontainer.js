@@ -44,9 +44,8 @@ const DynamicRow = (props) => {
               <AbbreviatedNumber
                 number={element.current_price}
                 fiat={props.fiat}
-                abbr={false}
-                noAbbreviation={true}
-                flex={'center'}
+                noAbbreviation
+                flex={"center"}
               />
             </TableItem>
 
@@ -119,7 +118,6 @@ const DynamicRow = (props) => {
                 <Chart
                   chartType="SmallLine"
                   data={chartReducer(element.sparkline_in_7d.price)}
-                  color={theme.chart.line.small}
                 />
               </SmallChartContainer>
             </TableItem>
@@ -144,7 +142,6 @@ export default function CoinContainer(props) {
     if (page === 1) {
       setCoinBank(data.data);
     } else {
-      console.error("Added");
       setCoinBank([...coinBank, ...data.data]);
     }
     setIsLoading(false);
@@ -156,15 +153,15 @@ export default function CoinContainer(props) {
   };
 
   useEffect(() => {
-    getData(false);
+    getData();
   }, []);
 
   useEffect(() => {
-    setPage(1);
+    getData(true);
   }, [props.currency]);
 
   useEffect(() => {
-    getData(false);
+    getData();
   }, [page]);
 
   return (

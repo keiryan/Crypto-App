@@ -40,7 +40,6 @@ export default function LargeChartsContainer(props) {
             label={"Volume 24h"}
             data={coin.total_volumes}
             headerNumber={coin.prices.at(-1)[1]}
-            color={theme.chart.bars}
             fiat={props.currency}
           />
         </>
