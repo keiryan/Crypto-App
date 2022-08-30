@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 import {
+  Container,
   TableContainer,
   Table,
   TableHeaderItem,
@@ -18,7 +19,13 @@ import {
   StyledLink,
   SmallChartContainer,
 } from "./coincontainer.styles";
-import { ProgressBar, CoinNumber, AbbreviatedNumber, Chart } from "components";
+import {
+  ProgressBar,
+  CoinNumber,
+  AbbreviatedNumber,
+  Chart,
+  LoadingWave,
+} from "components";
 import chartReducer from "../../utils/ChartReducer";
 
 const DynamicRow = (props) => {
@@ -165,29 +172,36 @@ export default function CoinContainer(props) {
   }, [page]);
 
   return (
-    <TableContainer>
-      <Loading loading={isLoading ? 1 : 0}>Loading...</Loading>
-      <Table>
-        <thead>
-          <tr>
-            <TableHeaderItem>#</TableHeaderItem>
-            <TableHeaderItem>Name</TableHeaderItem>
-            <TableHeaderItem>Price</TableHeaderItem>
-            <TableHeaderItem>1h%</TableHeaderItem>
-            <TableHeaderItem>24h%</TableHeaderItem>
-            <TableHeaderItem>7d%</TableHeaderItem>
-            <TableHeaderItem>24h Volume / Market Cap</TableHeaderItem>
-            <TableHeaderItem>Circulating / Total Supply</TableHeaderItem>
-            <TableHeaderItem>Last 7d</TableHeaderItem>
-          </tr>
-        </thead>
-        <tbody>
-          {!isLoading && <DynamicRow list={coinBank} fiat={props.currency} />}
-        </tbody>
-      </Table>
-      <LoadMoreButton onClick={nextPage} length={coinBank.length}>
-        Load More
-      </LoadMoreButton>
-    </TableContainer>
+    <Container>
+      {isLoading && <LoadingWave number={9} />}
+      {!isLoading && (
+        <TableContainer>
+          <Loading loading={isLoading ? 1 : 0}>Loading...</Loading>
+          <Table>
+            <thead>
+              <tr>
+                <TableHeaderItem>#</TableHeaderItem>
+                <TableHeaderItem>Name</TableHeaderItem>
+                <TableHeaderItem>Price</TableHeaderItem>
+                <TableHeaderItem>1h%</TableHeaderItem>
+                <TableHeaderItem>24h%</TableHeaderItem>
+                <TableHeaderItem>7d%</TableHeaderItem>
+                <TableHeaderItem>24h Volume / Market Cap</TableHeaderItem>
+                <TableHeaderItem>Circulating / Total Supply</TableHeaderItem>
+                <TableHeaderItem>Last 7d</TableHeaderItem>
+              </tr>
+            </thead>
+            <tbody>
+              {!isLoading && (
+                <DynamicRow list={coinBank} fiat={props.currency} />
+              )}
+            </tbody>
+          </Table>
+          <LoadMoreButton onClick={nextPage} length={coinBank.length}>
+            Load More
+          </LoadMoreButton>
+        </TableContainer>
+      )}
+    </Container>
   );
 }

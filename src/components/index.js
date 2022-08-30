@@ -13,3 +13,4 @@ export { RangeSelector } from './RangeSelector';
 export { Chart } from './Chart';
 export { LargeChartsContainer } from './LargeChartsContainer';
 export { ThemeContainer } from './ThemeContainer';
+export { LoadingWave } from './LoadingWave';
