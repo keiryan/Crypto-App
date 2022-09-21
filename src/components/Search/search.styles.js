@@ -1,34 +1,10 @@
 import styled from "styled-components";
-import { Base } from "../../app.styles";
 import { Link } from "react-router-dom";
+import { Base, BaseInput, BaseForm } from "../../app.styles";
 
-export const Container = styled(Base)`
-  width: 200px;
-  height: 35px;
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.quaternary};
-  padding: 0px 10px;
-  position: relative;
-`;
+export const SearchForm = styled(BaseForm)``;
 
-export const SearchForm = styled.form`
-  width: 100%;
-  height: 100%;
-`;
-
-export const SearchInput = styled.input`
-  padding: 0px 10px;
-  font-size: 14px;
-  color: white;
-  background-color: transparent;
-  outline: none;
-  border: none;
-  width: 100%;
-  height: 100%;
-  ::placeholder {
-    color: #fff;
-  }
-`;
+export const SearchInput = styled(BaseInput)``;
 
 export const IconContainer = styled(Base)`
   align-items: center;
@@ -51,6 +27,9 @@ export const ListContainer = styled(Base)`
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+export const LinkStyle = styled.div`
   color: ${(props) => props.theme.secondary};
   padding: 5px 10px;
   :hover {

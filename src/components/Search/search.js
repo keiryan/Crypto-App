@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useState, } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Container,
   SearchInput,
   SearchForm,
   IconContainer,
+  LinkStyle,
   StyledLink,
   ListContainer,
 } from "./search.styles";
@@ -15,21 +15,32 @@ function ListOfCoins(props) {
   return (
     <ListContainer onMouseLeave={props.left}>
       {props.list.map((element) => {
-        return (
-          <StyledLink
-            key={element.name}
-            to={`coin/${element.id}`}
-            onClick={props.clearList}
-          >
-            {element.name}
-          </StyledLink>
-        );
+        if (props.handleClick !== undefined) {
+          return (
+            <LinkStyle
+              key={element.name}
+              onClick={() => props.clearList(element)}
+            >
+              {element.name}
+            </LinkStyle>
+          );
+        } else {
+          return (
+            <StyledLink
+              key={element.name}
+              to={`coin/${element.id}`}
+              onClick={props.clearList}
+            >
+              <LinkStyle>{element.name}</LinkStyle>
+            </StyledLink>
+          );
+        }
       })}
     </ListContainer>
   );
 }
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [list, setList] = useState([]);
@@ -57,32 +68,40 @@ export default function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (props.handleClick) {
+      props.handleClick(list[0]);
+    } else {
+      navigate(`/coin/${list[0].id}`);
+    }
     setSearchValue("");
-    navigate(`/coin/${list[0].id}`);
     clearList();
   };
 
-  const clearList = () => {
+  const clearList = (coin) => {
+    // To ensure the passed object is not a synthetic mouse event.
+    coin?.id && props.handleClick(coin);
     setSearchValue("");
     setList([]);
   };
 
   return (
-    <>
-      <Container>
+    <SearchForm onSubmit={handleSubmit}>
         <IconContainer onClick={handleSubmit}>
           <SVG name="search" />
         </IconContainer>
-        <SearchForm onSubmit={handleSubmit}>
           <SearchInput
             onChange={handleChange}
             value={searchValue}
             type="text"
-            placeholder="Search"
+            placeholder={props.placeholder || "Search"}
           />
+          <ListOfCoins
+          handleClick={props?.handleClick}
+          left={clearList}
+          list={list}
+          clearList={clearList}
+        />
         </SearchForm>
-        <ListOfCoins left={clearList} list={list} clearList={clearList} />
-      </Container>
-    </>
+
   );
 }
