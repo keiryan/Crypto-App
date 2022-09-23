@@ -64,41 +64,41 @@ export default function Navbar(props) {
             </NavBarNotchItem>
             <NavBarNotchItem>
               <NavBarNotchText>
-                <AbbreviatedNumber number={props.marketCap} fiat={props.fiat}/>
+                <AbbreviatedNumber number={data.data.total_market_cap[props.fiat]} fiat={props.fiat}/>
               </NavBarNotchText>
             </NavBarNotchItem>
             <NavBarNotchItem>
               <NavBarNotchText>
-                <AbbreviatedNumber number={props.coinValue} fiat={props.fiat}/>
+                <AbbreviatedNumber number={data.data.total_volume[props.fiat]} fiat={props.fiat}/>
               </NavBarNotchText>
               <ProgressBar value={20} max={100} />
             </NavBarNotchItem>
             <NavBarNotchItem>
               <NavBarNotchText>
-                {((coinOne.circulating_supply / coinOne.total_supply) * 100) |
+                {((data.data.total_volume.btc / data.data.total_market_cap.btc) * 100) |
                   0}
                 %
               </NavBarNotchText>
               <IconContainer>
-                <Icon src={coinOne.image} alt={coinOne.id} />
+                <Icon src="https://bitcoin.org/img/icons/opengraph.png?1657703267" alt={coinOne.id} />
               </IconContainer>
               <ProgressBar
-                value={coinOne.circulating_supply}
-                max={coinOne.total_supply}
+                value={data.data.total_volume.btc}
+                max={data.data.total_market_cap.btc}
               />
             </NavBarNotchItem>
             <NavBarNotchItem>
               <NavBarNotchText>
-                {((coinTwo.circulating_supply / coinTwo.total_supply) * 100) |
+                {((data.data.total_volume.eth / data.data.total_market_cap.eth) * 100) |
                   0}
                 %
               </NavBarNotchText>
               <IconContainer>
-                <Icon src={coinTwo.image} alt={coinTwo.id} />
+                <Icon src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png" alt={coinTwo.id} />
               </IconContainer>
               <ProgressBar
-                value={coinTwo.circulating_supply}
-                max={coinTwo.total_supply}
+                value={data.data.total_volume.eth}
+                max={data.data.total_market_cap.eth}
               />
             </NavBarNotchItem>
           </>

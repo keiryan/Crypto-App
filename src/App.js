@@ -62,10 +62,13 @@ const Theme = {
     background: "#2172E5",
   },
   chart: {
-    bars: "#2172E5",
+    bar: {
+      color: "#2172E5",
+      backgroundColor: "#2172E5",
+    },
     line: {
-      large: "#FF6384",
-      small: "#FF6384",
+      color: "#FF6384",
+      backgroundColor: "rgba(255, 99, 132, 0.1)",
     },
   },
   number: {
@@ -85,11 +88,15 @@ const InvertTheme = {
     background: "#E8B8A1",
   },
   chart: {
-    bars: "#2172E5",
     line: {
-      large: "#F7B394",
-      small: "#8CC084",
+      color: "#F7B394",
+      backgroundColor: "rgba(247, 179, 148, 0.5)",
     },
+
+    bar: {
+      color: "#2172E5",
+      backgroundColor: "#2172E5",
+    }
   },
   number: {
     up: "#649200",
@@ -116,12 +123,6 @@ export default function App() {
           <Navbar
             defaultCurrency={currency}
             handleCurrency={handleCurrency}
-            firstCoin={{ percentage: 44 }}
-            secondCoin={{ percentage: 21 }}
-            coinValue={Math.random() * 10_000_000_000_000}
-            marketCap={Math.random() * 10_000_000_000_000}
-            totalAmountOfCoins={(Math.random() * 10000) | 0}
-            exchange={(Math.random() * 1000) | 0}
             toggleTheme={toggleTheme}
             fiat={currency}
           />

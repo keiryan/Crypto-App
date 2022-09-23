@@ -1,28 +1,7 @@
 import React from "react";
 import { Line, Bar } from "react-chartjs-2";
 import { useTheme } from "styled-components";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  BarElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import Chart from "chart.js/auto";
 
 const bank = {
   Line: Line,
@@ -39,8 +18,9 @@ const ChartLegend = {
           {
             label: "",
             data: [],
+            fill: "origin",
+            backgroundColor: "rgba(0, 200, 200, 0.5)",
             borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
             pointRadius: 0,
             borderWidth: 3,
           },
@@ -187,8 +167,6 @@ const ChartLegend = {
             label: "",
             data: [],
             borderColor: "#AFD0BF",
-            fill: "origin",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
             pointRadius: 0,
             borderWidth: 2,
             tension: 0.5,
@@ -230,20 +208,29 @@ const ChartLegend = {
   },
 };
 
-export default function Chart(props) {
+
+export default function SmartChart(props) {
   const theme = useTheme();
   const chartType = ChartLegend[props.chartType];
-  const Chart = bank[chartType.chartType];
+  const NewChart = bank[chartType.chartType];
   const config = {
     data: {
-      labels: props.data.map((element, index) => index + 1),
+      labels: props.data.map((element, index) => {
+        if(props.chartType === 'Line' || props.chartType === 'Bar'){
+          return new Date(element[0]).toString().split(' ')[2];
+        } else {
+          return index + 1
+        }
+      }),
       datasets: [
         {
           ...chartType.config.data.datasets[0],
           label: "",
-          data: props.data.map((element, index) => props.dataIndex ? element[props.dataIndex] : element),
-          borderColor: props.color || theme.chart.line.large,
-          backgroundColor: props.color || theme.primary,
+          data: props.data.map((element, index) =>
+            props.dataIndex ? element[props.dataIndex] : element
+          ),
+          borderColor: theme.chart[chartType.chartType.toLowerCase()].color || theme.chart.line.large,
+          backgroundColor: theme.chart[chartType.chartType.toLowerCase()].backgroundColor || theme.primary,
         },
       ],
     },
@@ -252,5 +239,5 @@ export default function Chart(props) {
     },
   };
 
-  return <Chart data={config.data} options={config.options} />;
+  return <NewChart data={config.data} options={config.options} />;
 }

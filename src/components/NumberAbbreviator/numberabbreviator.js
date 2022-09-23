@@ -45,6 +45,9 @@ export default function AbbreviatedNumber(props) {
     const formula = parsedNum.length % 3;
 
     if (parsedNum.length < 4) {
+      // if(){
+
+      // }
       finalNumber = `${fiatSymbol + parsedNum}`;
     }
     switch (parsedNum.length) {
@@ -81,7 +84,7 @@ export default function AbbreviatedNumber(props) {
               }.${spreadNum.at(-1)}`.concat(symbol)
             : `${spreadNum.slice(0, spreadNum.length - 1)}.${spreadNum.at(
                 -1
-              )}`.concat(symbol) + fiatSymbol;
+              )}`.concat(symbol) + ` ${fiatSymbol}`;
       } else {
         finalNumber =
           fiatSymbol.length === 1
@@ -89,7 +92,7 @@ export default function AbbreviatedNumber(props) {
                 symbol
               )
             : `${spreadNum.slice(0, spreadNum.length - 1)}`.concat(symbol) +
-              fiatSymbol;
+              ` ${fiatSymbol}`;
       }
     } else {
       fiatSymbol.length === 1
@@ -99,7 +102,7 @@ export default function AbbreviatedNumber(props) {
   }
 
   return (
-    <Container title={`${fiatSymbol}${props.number}`}>
+    <Container title={fiatSymbol.length === 1 ? `${fiatSymbol}${props.number}` : `${props.number} ${fiatSymbol}`}>
       {finalNumber} {props.crypto && props.crypto.toUpperCase()}
     </Container>
   );

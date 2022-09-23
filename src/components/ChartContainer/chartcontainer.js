@@ -20,7 +20,6 @@ export default function ChartContainer(props) {
           coin={props.coin}
           chartType={props.chartType}
           dataIndex={1}
-          color={props.color}
         />
       </Container>
     );
