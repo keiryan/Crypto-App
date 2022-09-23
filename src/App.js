@@ -128,7 +128,7 @@ export default function App() {
           />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="portfolio" element={<Portfolio />} />
+            <Route path="portfolio" element={<Portfolio currency={currency}/>} />
             <Route path="coinpage" element={<CoinPage currency={currency} />} />
             <Route path="coin/:id" element={<Coin fiat={currency} />} />
             <Route path="*" element={<Lost />} />

@@ -45,9 +45,6 @@ export default function AbbreviatedNumber(props) {
     const formula = parsedNum.length % 3;
 
     if (parsedNum.length < 4) {
-      // if(){
-
-      // }
       finalNumber = `${fiatSymbol + parsedNum}`;
     }
     switch (parsedNum.length) {
