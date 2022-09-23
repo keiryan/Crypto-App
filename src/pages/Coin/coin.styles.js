@@ -1,6 +1,15 @@
 import styled from "styled-components";
 import { Base } from "../../app.styles";
 
+export const LoadingContainer = styled(Base)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: ${(props) => props.isLoading  ? '100%' : 'auto'};
+`;
+
 export const Container = styled(Base)`
   width: 90vw;
   flex-direction: column;
@@ -125,6 +134,7 @@ export const CoinConversionContainer = styled(Base)`
 `;
 
 export const CoinChartContainer = styled.div`
-margin: 40px 0px;
-width: 100%;
-height: 200px;`
+  margin: 40px 0px;
+  width: 100%;
+  height: 200px;
+`;

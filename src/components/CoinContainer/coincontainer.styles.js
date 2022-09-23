@@ -2,6 +2,13 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Base } from "../../app.styles";
 
+export const Container = styled(Base)`
+flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
 export const TableContainer = styled(Base)`
   flex-direction: column;
   align-items: center;
