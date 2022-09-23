@@ -34,12 +34,30 @@ export const AddAssetButton = styled(AddButton)`
   margin: 60px 0px;
 `;
 
+export const TrashAndSaveContainer = styled(Base)``;
+
 export const SaveButton = styled(AddButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px 40px;
-  opacity:${(props) => props.completed === 'yes' ? 1 : 0.5};;
-  background-color: ${(props) => props.completed === 'yes' ? '#07d554' : '#2C2E36'};
+  opacity: ${(props) => (props.completed === "yes" ? 1 : 0.5)};
+  background-color: ${(props) =>
+    props.completed === "yes" ? "#07d554" : "#2C2E36"};
   :hover {
-    cursor: ${(props) => props.completed === 'yes' ? 'pointer' : 'default'};
+    cursor: ${(props) => (props.completed === "yes" ? "pointer" : "default")};
+  }
+`;
+
+export const TrashButton = styled(Base)`
+  margin: 0px 20px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  opacity: ${(props) => (props.completed === "yes" ? 1 : 0.5)};
+  background-color: ${(props) =>
+    props.completed === "yes" ? "#cf0200" : "#2C2E36"};
+  :hover {
+    cursor: ${(props) => (props.completed === "yes" ? "pointer" : "default")};
   }
 `;
 
@@ -51,9 +69,9 @@ export const AddAssetScreen = styled(Base)`
   align-items: center;
   justify-content: center;
   display: ${(props) => (props.toggled ? "flex" : "none")};
-  width: 100%;
-  height: 100%;
-  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -114,7 +132,6 @@ export const EditButton = styled.div`
   padding: 10px;
 `;
 
-
 export const CoinListContainer = styled(Base)`
   flex-direction: column;
   width: 80%;
@@ -156,6 +173,7 @@ export const CoinStatName = styled.div`
 
 export const CoinStatData = styled.div`
   color: lime;
+  text-overflow: ellipsis;
 `;
 
 export const AssetDataContainer = styled(Base)`
@@ -182,4 +200,9 @@ export const AssetIconName = styled.div`
   color: ${(props) => props.theme.secondary};
   font-weight: bold;
   text-align: center;
+`;
+
+export const ProgressContainer = styled(Base)`
+  align-items: center;
+  padding: 0px 10px;
 `;

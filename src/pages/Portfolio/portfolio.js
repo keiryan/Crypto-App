@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SVG, LoadingWave, CoinNumber } from "components";
+import { SVG, LoadingWave, CoinNumber, ProgressBar } from "components";
 import {
   Container,
   AddAssetButton,
@@ -28,6 +28,10 @@ import {
   RowSpacer,
   CoinListContainer,
   AddAssetScreen,
+  AddAssetScreenTwo,
+  ProgressContainer,
+  TrashAndSaveContainer,
+  TrashButton,
 } from "./portfolio.styles";
 
 import { SearchBar, BaseInput } from "components";
@@ -65,12 +69,26 @@ function Assets(props) {
 
                 <CoinStats>
                   <CoinStatName>Market Cap vs Volume: </CoinStatName>
-                  <CoinStatData>{asset.name}</CoinStatData>
+                  <CoinStatData>
+                    <ProgressBar
+                      value={asset.market_data.total_volume.usd}
+                      max={asset.market_data.market_cap.usd}
+                      innie
+                      height={"15px"}
+                    />
+                  </CoinStatData>
                 </CoinStats>
 
                 <CoinStats>
                   <CoinStatName>Circ supply vs max supply: </CoinStatName>
-                  <CoinStatData>$35,999</CoinStatData>
+                  <ProgressContainer>
+                    <ProgressBar
+                      value={asset.market_data.circulating_supply}
+                      max={asset.market_data.max_supply}
+                      innie
+                      height={"15px"}
+                    />
+                  </ProgressContainer>
                 </CoinStats>
               </CoinStatsRow>
 
@@ -85,11 +103,12 @@ function Assets(props) {
                   <CoinStatName>Amount Value: </CoinStatName>
                   <CoinStatData>
                     <CoinNumber
-                      number={(
-                        asset.purchaseAmount /
-                        asset.market_data.current_price.usd
-                      )}
+                      number={
+                        asset.market_data.current_price.usd /
+                        asset.purchaseAmount
+                      }
                       abbr
+                      baseNumber={1}
                     />
                   </CoinStatData>
                 </CoinStats>
@@ -97,13 +116,14 @@ function Assets(props) {
                 <CoinStats>
                   <CoinStatName>Price chance since purchase: </CoinStatName>
                   <CoinNumber
-                      number={(
-                        (asset.purchaseAmount /
-                          asset.market_data.current_price.usd) *
-                        1000
-                      )}
-                      abbr
-                    />
+                    number={
+                      (asset.market_data.current_price.usd /
+                        asset.purchaseAmount) *
+                      100
+                    }
+                    abbr
+                    baseNumber={100}
+                  />
                 </CoinStats>
 
                 <CoinStats>
@@ -120,7 +140,7 @@ function Assets(props) {
 }
 function AddingAsset(props) {
   const [coin, setCoin] = useState({});
-  const [coinComplete, setCoinComplete] = useState("");
+  const [coinComplete, setCoinComplete] = useState(false);
 
   const handleClick = (passedCoin) => {
     coin.name ? setCoin(passedCoin) : setCoin({ ...coin, ...passedCoin });
@@ -138,47 +158,45 @@ function AddingAsset(props) {
     completeCheck();
   };
 
-  const completeCheck = () => {
-    if (coin.name) {
-      if (coin.purchaseDate) {
-        if (coin.purchaseAmount) {
-          setCoinComplete("yes");
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+  const completeCheck = (passedCoin) => {
+    const coinInQuestion = passedCoin ? passedCoin : coin;
+    if (
+      coinInQuestion.name &&
+      coinInQuestion.purchaseDate &&
+      coinInQuestion.purchaseAmount
+    ) {
+      setCoinComplete("yes");
+      return true;
     } else {
       return false;
     }
   };
 
-  const save = () => {
-    if (coin.purchaseAmount) {
-      props.handleToggle();
-      const coinIsEdited = props.assets.find(
-        (asset) => asset.uniqueId === coin.uniqueId
-      );
-      if (coinIsEdited) {
-        const editedAssets = props.assets.map((asset) => {
-          asset.uniqueId === coinIsEdited.uniqueId && (asset = coinIsEdited);
-        });
-        props.setAssets(...editedAssets);
-      } else {
-        if (coinComplete) {
-          props.setAssets(coin);
-          setCoin({});
-          setCoinComplete("");
-        }
-      }
+  const deleteCoin = () => {
+    if (completeCheck()) {
+      props.deleteCoin(coin);
+      closingProcedures();
     }
   };
 
+  const save = () => {
+    if (completeCheck()) {
+      props.setAssets(coin);
+      closingProcedures();
+      
+    }
+  };
+
+  const closingProcedures = () => {
+    props.handleToggle();
+    setCoin({});
+    setCoinComplete(false);
+  }
+
   useEffect(() => {
-    completeCheck();
+    console.log(props.coin)
     setCoin(props.coin);
+    completeCheck(props.coin);
   }, [props.coin]);
 
   return (
@@ -197,10 +215,10 @@ function AddingAsset(props) {
           </CoinContainer>
           <DataInputs>
             <Spacer>
-            <SearchBar
-              placeholder={props.coin.name || "Select coin"}
-              handleClick={handleClick}
-            />
+              <SearchBar
+                placeholder={props.coin.name || "Select coin"}
+                handleClick={handleClick}
+              />
             </Spacer>
             <Spacer>
               <BaseInput
@@ -215,13 +233,19 @@ function AddingAsset(props) {
                 handleChange={handleDateChange}
                 icon="currency"
                 type="date"
+                value={coin.purchaseDate || null}
               />
             </Spacer>
           </DataInputs>
         </CoinAndInputs>
-        <SaveButton completed={coinComplete} onClick={save}>
-          Save and Continue
-        </SaveButton>
+        <TrashAndSaveContainer>
+          <SaveButton completed={coinComplete} onClick={save}>
+            Save and Continue
+          </SaveButton>
+          <TrashButton completed={coinComplete} onClick={deleteCoin}>
+            <SVG name="trash" overrideFill="#fff" />
+          </TrashButton>
+        </TrashAndSaveContainer>
       </AddAssetContainer>
     </AddAssetScreen>
   );
@@ -250,19 +274,39 @@ function Portfolio(props) {
     setAddingAsset(!addingAsset);
   };
 
+  const deleteCoin = (coin) => {
+    console.log("Source delete");
+    const newAssets = assets.filter((asset) => asset.id !== coin.id);
+    setAssets([...newAssets]);
+  };
+
   const callAPI = async (asset) => {
     setLoading(true);
     const currentData = await axios(
       `https://api.coingecko.com/api/v3/coins/${asset.id}?market_data=true`
     );
-    setAssets([
-      ...assets,
-      {
-        uniqueId: Math.random() * 1000000,
-        ...asset,
-        ...currentData.data,
-      },
-    ]);
+
+    const coinIsEdited = assets.find(
+      (element) => element.uniqueId === asset.uniqueId
+    );
+
+    if (coinIsEdited) {
+      const editedAssets = assets.map((asset) => {
+        asset.uniqueId === coinIsEdited.uniqueId && (asset = coinIsEdited);
+        setLoading(false);
+        return asset;
+      });
+    } else {
+      setAssets([
+        ...assets,
+        {
+          uniqueId: Math.random() * 1000000,
+          ...asset,
+          ...currentData.data,
+        },
+      ]);
+      setLoading(false);
+    }
   };
 
   return (
@@ -278,6 +322,7 @@ function Portfolio(props) {
         handleClose={handleClose}
         coin={passedCoin}
         assets={assets}
+        deleteCoin={deleteCoin}
       />
     </Container>
   );
