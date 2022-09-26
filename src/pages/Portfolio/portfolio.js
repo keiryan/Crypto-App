@@ -28,7 +28,6 @@ import {
   RowSpacer,
   CoinListContainer,
   AddAssetScreen,
-  AddAssetScreenTwo,
   ProgressContainer,
   TrashAndSaveContainer,
   TrashButton,
@@ -148,13 +147,13 @@ function AddingAsset(props) {
   };
 
   const handleSubmit = (value) => {
-    coin.purchaseAmount = value >> 0;
+    setCoin({...coin, purchaseAmount: value >> 0});
     completeCheck();
   };
 
   const handleDateChange = (date) => {
     const rearrangedDate = date.split("-").reverse().join("-");
-    coin.purchaseDate = rearrangedDate;
+    setCoin({ ...coin, purchaseDate: rearrangedDate });
     completeCheck();
   };
 
@@ -183,7 +182,6 @@ function AddingAsset(props) {
     if (completeCheck()) {
       props.setAssets(coin);
       closingProcedures();
-      
     }
   };
 
@@ -191,13 +189,13 @@ function AddingAsset(props) {
     props.handleToggle();
     setCoin({});
     setCoinComplete(false);
-  }
+  };
 
   useEffect(() => {
-    console.log(props.coin)
     setCoin(props.coin);
     completeCheck(props.coin);
   }, [props.coin]);
+
 
   return (
     <AddAssetScreen toggled={props.addingAsset}>
@@ -216,13 +214,13 @@ function AddingAsset(props) {
           <DataInputs>
             <Spacer>
               <SearchBar
-                placeholder={props.coin.name || "Select coin"}
+                placeholder={coin.name || "Select coin"}
                 handleClick={handleClick}
               />
             </Spacer>
             <Spacer>
               <BaseInput
-                placeholder={props.coin.purchaseAmount || "Purchase Amount"}
+                placeholder={coin.purchaseAmount || "Purchase Amount"}
                 handleSubmit={handleSubmit}
                 icon="currency"
               />
@@ -275,7 +273,6 @@ function Portfolio(props) {
   };
 
   const deleteCoin = (coin) => {
-    console.log("Source delete");
     const newAssets = assets.filter((asset) => asset.id !== coin.id);
     setAssets([...newAssets]);
   };
@@ -291,11 +288,13 @@ function Portfolio(props) {
     );
 
     if (coinIsEdited) {
-      const editedAssets = assets.map((asset) => {
-        asset.uniqueId === coinIsEdited.uniqueId && (asset = coinIsEdited);
-        setLoading(false);
-        return asset;
+      const editedAssets = assets.map((element) => {
+        if (element.uniqueId === coinIsEdited.uniqueId) {
+          return { ...asset, ...currentData.data };
+        }
+        return element;
       });
+      setAssets([...editedAssets]);
     } else {
       setAssets([
         ...assets,
@@ -305,15 +304,14 @@ function Portfolio(props) {
           ...currentData.data,
         },
       ]);
-      setLoading(false);
     }
+    setLoading(false);
   };
-
   return (
     <Container>
       <AddAssetButton onClick={handleToggle}>Add Asset</AddAssetButton>
       <ListContainer>
-        <Assets assets={assets} editCoin={editCoin} />
+        {loading ? (<LoadingWave number={9}/>) : <Assets assets={assets} editCoin={editCoin} />}
       </ListContainer>
       <AddingAsset
         setAssets={addAsset}
