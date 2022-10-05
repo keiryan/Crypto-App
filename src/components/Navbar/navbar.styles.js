@@ -38,7 +38,7 @@ export const PageLink = styled(NavLink)`
   background-color: ${(props) => props.theme.tertiary};
   font-weight: bold;
   &.active {
-    background: ${(props) => props.theme.quaternary};
+    background-color: ${(props) => props.theme.quaternary};
   }
 `;
 
