@@ -147,7 +147,7 @@ export default function CoinContainer(props) {
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${props.currency}&order=market_cap_desc&per_page=${resultsPerPage}&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     if (page === 1) {
-      setCoinBank(data.data);
+      setCoinBank([...data.data]);
     } else {
       setCoinBank([...coinBank, ...data.data]);
     }

@@ -3,11 +3,11 @@ import { Base } from "../../app.styles";
 
 export const Container = styled(Base)`
   width: 100%;
-  height: 100%;
   flex-direction: column;
   position: relative;
   align-items: center;
   position: relative;
+  padding: 30px;
 `;
 
 export const ListContainer = styled(Base)`
@@ -31,7 +31,7 @@ const AddButton = styled.div`
 
 export const AddAssetButton = styled(AddButton)`
   width: 250px;
-  margin: 60px 0px;
+  margin: 30px 0px;
 `;
 
 export const TrashAndSaveContainer = styled(Base)``;
@@ -69,9 +69,10 @@ export const AddAssetScreen = styled(Base)`
   align-items: center;
   justify-content: center;
   display: ${(props) => (props.toggled ? "flex" : "none")};
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
+  top: 0;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -140,6 +141,10 @@ export const CoinListContainer = styled(Base)`
 export const CoinStatsContainer = styled(Base)`
   margin: 20px 0px;
   width: 100%;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const CoinStats = styled(Base)`
@@ -156,6 +161,10 @@ export const CoinStatsRow = styled(Base)`
   background-color: ${(props) => props.theme.tertiary};
   border-radius: 8px;
   width: 100%;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+
+  }
 `;
 
 export const RowSpacer = styled.div`
@@ -165,6 +174,9 @@ export const RowSpacer = styled.div`
 export const CoinStatsRowContainer = styled(Base)`
   flex-direction: column;
   width: 100%;
+  @media (max-width: 1000px) {
+    margin: 20px 0px;
+  }
 `;
 
 export const CoinStatName = styled.div`

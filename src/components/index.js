@@ -15,3 +15,4 @@ export { LargeChartsContainer } from './LargeChartsContainer';
 export { ThemeContainer } from './ThemeContainer';
 export { LoadingWave } from './LoadingWave';
 export { BaseInput } from './BaseInput';
+export { BottomBar } from './BottomBar';

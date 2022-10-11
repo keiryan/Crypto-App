@@ -250,7 +250,7 @@ export default function Coin(props) {
             />
             <RangeSelector handleTimeFrame={handleTimeFrame} />
             <CoinConversionContainer>
-              {loading && (
+              {!loading && (
                 <ConversionBar
                   fiat={{
                     name: "USD",

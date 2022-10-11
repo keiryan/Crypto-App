@@ -36,6 +36,7 @@ export const ListContainer = styled(Base)`
   border-radius: 8px;
   height: 250px;
   overflow-y: auto;
+  z-index: 999;
 `;
 
 export const ListItem = styled.div`
@@ -44,6 +45,10 @@ export const ListItem = styled.div`
   :hover {
     cursor: pointer;
     background-color: rgba(200, 200, 200, 0.1);
+  }
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  @media (max-width: 1000px) {
+    padding: 8px 16.5px;
   }
 `;
 

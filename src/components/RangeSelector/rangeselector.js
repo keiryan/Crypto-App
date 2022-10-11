@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Container,
   ButtonContainer,
@@ -21,37 +21,31 @@ const StyledButton = (props) => {
   });
 };
 
-export default class RangeSelector extends React.Component {
-  state = {
-    range: 7,
-    buttons: [
-      { id: Math.random() * 1000000, value: 7 },
-      { id: Math.random() * 1000000, value: 30 },
-      { id: Math.random() * 1000000, value: 60 },
-      { id: Math.random() * 1000000, value: 90 },
-      { id: Math.random() * 1000000, value: 180 },
-      { id: Math.random() * 1000000, value: 365 },
-      { id: Math.random() * 1000000, value: 'max' },
-    ],
-  };
+function RangeSelector(props) {
+  const [range, setRange] = useState(7);
+  const [buttons, setButtons] = useState([
+    { id: Math.random() * 1000000, value: 7 },
+    { id: Math.random() * 1000000, value: 30 },
+    { id: Math.random() * 1000000, value: 60 },
+    { id: Math.random() * 1000000, value: 90 },
+    { id: Math.random() * 1000000, value: 180 },
+    { id: Math.random() * 1000000, value: 365 },
+    { id: Math.random() * 1000000, value: "max" },
+  ]);
 
-  handleClick = (e) => {
-    const newSelect = this.state.buttons.find(
+  const handleClick = (e) => {
+    const newSelect = buttons.find(
       (element) => `${element.id}` === e.target.id
     );
-    this.setState({ range: newSelect.value });
-    this.props.handleTimeFrame(newSelect.value);
+    setRange(newSelect.value);
+    props.handleTimeFrame(newSelect.value);
+    // this.props.handleTimeFrame(newSelect.value);
   };
-
-  render() {
-    return (
-      <Container>
-        <StyledButton
-          range={this.state.range}
-          handleClick={this.handleClick}
-          list={this.state.buttons}
-        />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <StyledButton range={range} handleClick={handleClick} list={buttons} />
+    </Container>
+  );
 }
+
+export default RangeSelector;

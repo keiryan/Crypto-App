@@ -4,6 +4,9 @@ import { Base } from "../../app.styles";
 export const Container = styled(Base)`
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 export const NumberContainer = styled(Base)`
@@ -12,6 +15,9 @@ export const NumberContainer = styled(Base)`
   border-radius: 8px;
   overflow: hidden;
   margin: 0 20px;
+  @media (max-width: 1000px) {
+    margin: 20px 0px;
+  }
 `;
 
 export const SymbolContainer = styled.div`

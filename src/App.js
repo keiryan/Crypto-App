@@ -1,10 +1,12 @@
 import "App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { Container } from "app.styles";
 import { Home, Portfolio, CoinPage, Coin, Lost } from "pages";
-import { Navbar } from "components";
+import { BottomBar, Navbar } from "components";
+import axios from "axios";
+
 
 const GlobalStyle = createGlobalStyle`
 
@@ -115,6 +117,11 @@ export default function App() {
     setCurrency(fiat);
   };
 
+  // useEffect(() => {
+  //   axios.get('http://localhost:3000/coins').then((res) => {
+  //     console.log(res.data);
+  //   })}, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -133,6 +140,7 @@ export default function App() {
             <Route path="coin/:id" element={<Coin fiat={currency} />} />
             <Route path="*" element={<Lost />} />
           </Routes>
+          <BottomBar />
         </Container>
       </BrowserRouter>
     </ThemeProvider>

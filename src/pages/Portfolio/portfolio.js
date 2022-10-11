@@ -54,14 +54,14 @@ function Assets(props) {
                 <CoinStats>
                   <CoinStatName>Current Price: </CoinStatName>
                   <CoinStatData>
-                    {asset.market_data.current_price.usd.toFixed(2)}
+                    {asset.market_data.current_price[props.currency].toFixed(2)}
                   </CoinStatData>
                 </CoinStats>
 
                 <CoinStats>
                   <CoinStatName>Price Change 24h: </CoinStatName>
                   <CoinNumber
-                    number={asset.market_data.price_change_24h_in_currency.usd}
+                    number={asset.market_data.price_change_24h_in_currency[props.currency]}
                     abbr
                   />
                 </CoinStats>
@@ -70,8 +70,8 @@ function Assets(props) {
                   <CoinStatName>Market Cap vs Volume: </CoinStatName>
                   <CoinStatData>
                     <ProgressBar
-                      value={asset.market_data.total_volume.usd}
-                      max={asset.market_data.market_cap.usd}
+                      value={asset.market_data.total_volume[props.currency]}
+                      max={asset.market_data.market_cap[props.currency]}
                       innie
                       height={"15px"}
                     />
@@ -103,7 +103,7 @@ function Assets(props) {
                   <CoinStatData>
                     <CoinNumber
                       number={
-                        asset.market_data.current_price.usd /
+                        asset.market_data.current_price[props.currency] /
                         asset.purchaseAmount
                       }
                       abbr
@@ -116,7 +116,7 @@ function Assets(props) {
                   <CoinStatName>Price chance since purchase: </CoinStatName>
                   <CoinNumber
                     number={
-                      (asset.market_data.current_price.usd /
+                      (asset.market_data.current_price[props.currency]/
                         asset.purchaseAmount) *
                       100
                     }
@@ -311,7 +311,7 @@ function Portfolio(props) {
     <Container>
       <AddAssetButton onClick={handleToggle}>Add Asset</AddAssetButton>
       <ListContainer>
-        {loading ? (<LoadingWave number={9}/>) : <Assets assets={assets} editCoin={editCoin} />}
+        {loading ? (<LoadingWave number={9}/>) : <Assets currency={props.currency} assets={assets} editCoin={editCoin} />}
       </ListContainer>
       <AddingAsset
         setAssets={addAsset}
