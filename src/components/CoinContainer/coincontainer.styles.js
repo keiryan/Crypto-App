@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { Base } from "../../app.styles";
 
 export const Container = styled(Base)`
-flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  
 `;
 
 export const TableContainer = styled(Base)`
@@ -14,6 +15,9 @@ export const TableContainer = styled(Base)`
   align-items: center;
   width: 100%;
   margin: 20px 0px;
+  /* @media (max-width: 1000px) {
+    overflow-x: auto;
+  } */
 `;
 
 export const Table = styled.table`
@@ -22,6 +26,9 @@ export const Table = styled.table`
   background-color: ${(props) => props.theme.tertiary};
   padding: 10px 5px;
   border-radius: 8px;
+  @media (max-width: 1000px) {
+    overflow-x: auto;
+  }
 `;
 
 export const StyledLink = styled(Link)`

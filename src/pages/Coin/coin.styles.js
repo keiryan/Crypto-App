@@ -7,14 +7,24 @@ export const LoadingContainer = styled(Base)`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: ${(props) => props.isLoading  ? '100%' : 'auto'};
+  height: ${(props) => (props.isLoading ? "100%" : "auto")};
+  position: relative;
+  padding: 0px 40px;
+  @media (max-width: 1000px) {
+    padding-top: 10%;
+  }
 `;
 
 export const Container = styled(Base)`
-  width: 90vw;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   color: ${(props) => props.theme.secondary};
+  z-index: 990;
+  margin-bottom: 20%;
+  @media (max-width: 1000px) {
+    margin-bottom: 60%;
+  }
 `;
 
 export const DataContainer = styled(Base)`
@@ -27,10 +37,19 @@ export const DataContainer = styled(Base)`
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  @media (max-width: 1000px) {
+    margin: 20px 0px;
+    width: 100%;
+  }
 `;
 
 export const SmallDataContainer = styled(DataContainer)`
   flex: 1;
+  @media (max-width: 1000px) {
+    width: 100%;
+    margin: 20px 0px;
+    justify-content: center;
+  }
 `;
 
 export const CoinNameContainer = styled(Base)`
@@ -51,7 +70,12 @@ export const CoinProfile = styled.img`
   margin: 10px;
 `;
 
-export const TopContainers = styled(Base)``;
+export const TopContainers = styled(Base)`
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
 
 export const Description = styled.p`
   line-height: 26px;
@@ -134,7 +158,13 @@ export const CoinConversionContainer = styled(Base)`
 `;
 
 export const CoinChartContainer = styled.div`
-  margin: 40px 0px;
+  margin-top: 40px;
   width: 100%;
   height: 200px;
+  position: fixed;
+  bottom: 0;
+  opacity: 0.4;
+  @media (max-width: 1000px) {
+  opacity: 0.4;
+  }
 `;

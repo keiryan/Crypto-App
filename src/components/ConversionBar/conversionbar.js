@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Input,
@@ -26,56 +26,48 @@ export const NumberInput = (props) => {
   );
 };
 
-export default class ConversionBar extends React.Component {
-  state = {
-    fiat: {},
-    crypto: 1,
+function ConversionBar(props) {
+  const [fiat, setFiat] = useState({});
+  const [crypto, setCrypto] = useState(1);
+
+  const fiatChange = (e) => {
+    const { value } = e.target;
+    setFiat({
+      ...fiat,
+      value: value,
+    });
+    setCrypto(value / fiat.currentPrice);
   };
 
-  fiatChange = (e) => {
+  const cryptoChange = (e) => {
     const { value } = e.target;
-    this.setState({
-      fiat: {
-        ...this.state.fiat,
-        value: value,
-      },
-      crypto: value / this.state.fiat.currentPrice,
+    setCrypto(value);
+    setFiat({
+      ...fiat,
+      value: value * fiat.currentPrice,
     });
   };
 
-  cryptoChange = (e) => {
-    const { value } = e.target;
-    this.setState({
-      crypto: value,
-      fiat: {
-        ...this.state.fiat,
-        value: value * this.state.fiat.currentPrice,
-      },
-    });
-  };
+  useEffect(() => {
+    setFiat(props.fiat);
+  }, [props.fiat]);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.fiat !== this.props.fiat) {
-      this.setState({ fiat: { ...this.props.fiat } });
-    }
-  }
-
-  render() {
-    return (
-      <Container>
-        <NumberInput
-          symbol={this.state?.fiat?.name}
-          handleChange={this.fiatChange}
-          value={this.state.fiat.value}
-          fiat="$"
-        />
-        <SVG name="sync" />
-        <NumberInput
-          symbol={this.props.crypto}
-          handleChange={this.cryptoChange}
-          value={this.state.crypto}
-        />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <NumberInput
+        symbol={fiat?.name}
+        handleChange={fiatChange}
+        value={fiat.value}
+        fiat="$"
+      />
+      <SVG name="sync" />
+      <NumberInput
+        symbol={props.crypto}
+        handleChange={cryptoChange}
+        value={crypto}
+      />
+    </Container>
+  );
 }
+
+export default ConversionBar;

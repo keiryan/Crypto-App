@@ -102,6 +102,5 @@ export default function SearchBar(props) {
           clearList={clearList}
         />
         </SearchForm>
-
   );
 }
