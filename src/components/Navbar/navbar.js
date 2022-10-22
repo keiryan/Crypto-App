@@ -32,11 +32,20 @@ export default function Navbar(props) {
     const data = await axios("https://api.coingecko.com/api/v3/global");
     setData(data.data);
     setLoading(false);
+    console.log(data.data.data);
+    console.log(
+      data.data.data.total_market_cap.btc,
+      data.data.data.total_market_cap.eth,
+      data.data.data.total_volume.btc / data.data.data.total_market_cap.btc * 100
+      
+    );
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  console.log(data);
 
   return (
     <Container>
@@ -44,7 +53,7 @@ export default function Navbar(props) {
         <SideContainer>
           <MobileHeader>Overview:</MobileHeader>
           <LinkContainer>
-            <PageLink to="coinpage">Coinpage</PageLink>
+            <PageLink to="/">Coinpage</PageLink>
             <PageLink to="portfolio">Portfolio</PageLink>
           </LinkContainer>
         </SideContainer>
@@ -60,7 +69,6 @@ export default function Navbar(props) {
           <ThemeContainer toggleTheme={props.toggleTheme} />
         </SideContainer>
       </NavContainer>
-
       {!loading && (
         <NotchContainer>
           <NavBarNotchItem>

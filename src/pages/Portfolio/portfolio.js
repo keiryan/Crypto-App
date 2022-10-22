@@ -36,18 +36,61 @@ import {
 import { SearchBar, BaseInput } from "components";
 
 function Assets(props) {
+  const dateFormatter = (passedDate, format) => {
+    return passedDate;
+    const date = new Date(passedDate);
+    const timestamp = new Date(date);
+    return timestamp.toLocaleString();
+  };
+  function longDateFormatter(passedISODate) {
+    return passedISODate;
+    const isoDate = new Date(passedISODate);
+    const unixDate = new Date(isoDate);
+    console.log(passedISODate, isoDate, unixDate);
+    const days = {
+      0: "Sunday",
+      1: "Monday",
+      2: "Tuesday",
+      3: "Wednesday",
+      4: "Thursday",
+      5: "Friday",
+      6: "Saturday",
+    };
+    if (unixDate) {
+      const currentDate = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "2-digit",
+      }).format(unixDate);
+      return `${days[new Date().getDay()]} ${currentDate}`;
+    }
+  }
+
+  const findLargerNumber = (number1, number2) => [number1, number2].sort();
+
   return (
     <CoinListContainer>
       {props.assets.map((asset) => {
+        const { _id, large, name, symbol, purchaseAmount, purchaseDate } =
+          asset;
+        const purchaseDateFormatted = dateFormatter(purchaseDate).split(",");
+        const longDate = longDateFormatter(purchaseDate);
+
+        //Sorts the numbers to find the larger one
+        const largerNumberSorted = [
+          asset.market_data.current_price[props.currency],
+          asset.historicalData.market_data.current_price[props.currency],
+        ].sort((a, b) => b - a);
+        // console.log(asset);
         return (
-          <CoinStatsContainer key={asset.uniqueId}>
-            <EditButton onClick={() => props.editCoin(asset)}>
-              <SVG name="edit" overrideFill="#fff" />
-            </EditButton>
+          <CoinStatsContainer key={_id || asset.uniqueId}>
             <AssetIconContainer>
-              <AssetIcon src={asset.large} alt={asset.name} />
-              <AssetIconName>{asset.name}</AssetIconName>
-              <AssetIconName>({asset.symbol.toUpperCase()})</AssetIconName>
+              <AssetIcon src={large} alt={name} />
+              <AssetIconName>{name}</AssetIconName>
+              <AssetIconName>({symbol.toUpperCase()})</AssetIconName>
+              <EditButton onClick={() => props.editCoin(asset)}>
+                <SVG name="edit" overrideFill="#fff" />
+              </EditButton>
             </AssetIconContainer>
             <CoinStatsRowContainer>
               <CoinStatsRow>
@@ -61,7 +104,9 @@ function Assets(props) {
                 <CoinStats>
                   <CoinStatName>Price Change 24h: </CoinStatName>
                   <CoinNumber
-                    number={asset.market_data.price_change_24h_in_currency[props.currency]}
+                    number={
+                      asset.market_data?.price_change_24h
+                    }
                     abbr
                   />
                 </CoinStats>
@@ -86,6 +131,7 @@ function Assets(props) {
                       max={asset.market_data.max_supply}
                       innie
                       height={"15px"}
+                      bold
                     />
                   </ProgressContainer>
                 </CoinStats>
@@ -94,8 +140,8 @@ function Assets(props) {
               <RowSpacer />
               <CoinStatsRow>
                 <CoinStats>
-                  <CoinStatName>Purchase Price: </CoinStatName>
-                  <CoinStatData>{asset.purchaseAmount}</CoinStatData>
+                  <CoinStatName>Purchased Amount: </CoinStatName>
+                  <CoinStatData>{purchaseAmount}</CoinStatData>
                 </CoinStats>
 
                 <CoinStats>
@@ -103,11 +149,26 @@ function Assets(props) {
                   <CoinStatData>
                     <CoinNumber
                       number={
-                        asset.market_data.current_price[props.currency] /
-                        asset.purchaseAmount
+                        asset.market_data.current_price[props.currency] *
+                        purchaseAmount
                       }
                       abbr
-                      baseNumber={1}
+                      noPercent
+                      baseNumber={
+                        asset.historicalData.market_data.current_price[
+                          props.currency
+                        ] * purchaseAmount
+                      }
+                      abbrOverride={`Price for ${purchaseAmount} ${
+                        asset.name
+                      } on ${purchaseDate}: ${
+                        asset.historicalData.market_data.current_price[
+                          props.currency
+                        ] * purchaseAmount
+                      } \nPrice for ${purchaseAmount} ${asset.name} today: ${
+                        asset.market_data.current_price[props.currency] *
+                        purchaseAmount
+                      }`}
                     />
                   </CoinStatData>
                 </CoinStats>
@@ -116,18 +177,20 @@ function Assets(props) {
                   <CoinStatName>Price chance since purchase: </CoinStatName>
                   <CoinNumber
                     number={
-                      (asset.market_data.current_price[props.currency]/
-                        asset.purchaseAmount) *
+                      ((largerNumberSorted[0] - largerNumberSorted[1]) /
+                        largerNumberSorted[1]) *
                       100
                     }
                     abbr
-                    baseNumber={100}
+                    baseNumber={1}
                   />
                 </CoinStats>
 
                 <CoinStats>
                   <CoinStatName>Purchase date: </CoinStatName>
-                  <CoinStatData>{asset.purchaseDate}</CoinStatData>
+                  <CoinStatData title={longDate}>
+                    {purchaseDateFormatted[0]}
+                  </CoinStatData>
                 </CoinStats>
               </CoinStatsRow>
             </CoinStatsRowContainer>
@@ -147,7 +210,7 @@ function AddingAsset(props) {
   };
 
   const handleSubmit = (value) => {
-    setCoin({...coin, purchaseAmount: value >> 0});
+    setCoin({ ...coin, purchaseAmount: value >> 0 });
     completeCheck();
   };
 
@@ -178,9 +241,21 @@ function AddingAsset(props) {
     }
   };
 
-  const save = () => {
+  const save = async () => {
     if (completeCheck()) {
-      props.setAssets(coin);
+      // const newCoin = await axios.get(
+      //   `https://api.coingecko.com/api/v3/coins/${coin.id}/history?date=${coin.purchaseDate}`
+      // );
+      // console.log(newCoin.data);
+      // const price = newCoin.data.market_data.current_price;
+      // const coinCopy = { ...coin, price };
+      const coinCopy = { ...coin };
+      // const savedCoin = await axios.post(
+      //   "http://localhost:8000/add-coin",
+      //   coinCopy
+      // );
+      // props.setAssets(savedCoin.data);
+      props.setAssets(coinCopy);
       closingProcedures();
     }
   };
@@ -195,7 +270,6 @@ function AddingAsset(props) {
     setCoin(props.coin);
     completeCheck(props.coin);
   }, [props.coin]);
-
 
   return (
     <AddAssetScreen toggled={props.addingAsset}>
@@ -220,7 +294,7 @@ function AddingAsset(props) {
             </Spacer>
             <Spacer>
               <BaseInput
-                placeholder={coin.purchaseAmount || "Purchase Amount"}
+                placeholder={coin.purchaseAmount || "Purchased Amount"}
                 handleSubmit={handleSubmit}
                 icon="currency"
               />
@@ -283,6 +357,10 @@ function Portfolio(props) {
       `https://api.coingecko.com/api/v3/coins/${asset.id}?market_data=true`
     );
 
+    const historicalData = await axios(
+      `https://api.coingecko.com/api/v3/coins/${asset.id}/history?date=${asset.purchaseDate}`
+    );
+
     const coinIsEdited = assets.find(
       (element) => element.uniqueId === asset.uniqueId
     );
@@ -299,19 +377,44 @@ function Portfolio(props) {
       setAssets([
         ...assets,
         {
-          uniqueId: Math.random() * 1000000,
           ...asset,
+          uniqueId: Math.random(),
           ...currentData.data,
+          historicalData: { ...historicalData.data },
         },
       ]);
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/coins").then((res) => {
+      console.log(res.data);
+      const assets = Promise.all(
+        res.data.map(async (asset) => {
+          const today = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${asset.id}`
+          );
+          return { ...asset, ...today.data, purchaseAmount: asset.amount || 1 };
+        })
+      ).then((data) => {
+        setAssets(data);
+      });
+    });
+  }, []);
   return (
     <Container>
       <AddAssetButton onClick={handleToggle}>Add Asset</AddAssetButton>
       <ListContainer>
-        {loading ? (<LoadingWave number={9}/>) : <Assets currency={props.currency} assets={assets} editCoin={editCoin} />}
+        {loading ? (
+          <LoadingWave number={9} />
+        ) : (
+          <Assets
+            currency={props.currency}
+            assets={assets}
+            editCoin={editCoin}
+          />
+        )}
       </ListContainer>
       <AddingAsset
         setAssets={addAsset}

@@ -25,9 +25,15 @@ const CoinNumber = (props) => {
         />
       </IconContainer>
       {props.abbr ? (
-        <AbbreviatedNumber title={props.number + "%"} fiat={props.fiat}>
+        <AbbreviatedNumber
+          title={
+            props.abbrOverride || props.number + (props.noPercent ? "" : "%")
+          }
+          fiat={props.fiat}
+        >
           <Number number={props.number} baseNumber={props.baseNumber || 0}>
-            {props.number && props.number.toFixed(2)}%
+            {props.number && props.number.toFixed(2)}
+            {props.noPercent ? "" : "%"}
           </Number>
         </AbbreviatedNumber>
       ) : (

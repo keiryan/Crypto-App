@@ -2,11 +2,10 @@ import "App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { Container } from "app.styles";
+import { Container, MiddleContainer } from "app.styles";
 import { Home, Portfolio, CoinPage, Coin, Lost } from "pages";
 import { BottomBar, Navbar } from "components";
 import axios from "axios";
-
 
 const GlobalStyle = createGlobalStyle`
 
@@ -98,7 +97,7 @@ const InvertTheme = {
     bar: {
       color: "#2172E5",
       backgroundColor: "#2172E5",
-    }
+    },
   },
   number: {
     up: "#649200",
@@ -117,10 +116,11 @@ export default function App() {
     setCurrency(fiat);
   };
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:3000/coins').then((res) => {
-  //     console.log(res.data);
-  //   })}, []);
+  useEffect(() => {
+    axios.get("http://localhost:8000/coins").then((res) => {
+      console.log(res.data);
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -133,13 +133,21 @@ export default function App() {
             toggleTheme={toggleTheme}
             fiat={currency}
           />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="portfolio" element={<Portfolio currency={currency}/>} />
-            <Route path="coinpage" element={<CoinPage currency={currency} />} />
-            <Route path="coin/:id" element={<Coin fiat={currency} />} />
-            <Route path="*" element={<Lost />} />
-          </Routes>
+          <MiddleContainer>
+            <Routes>
+            <Route
+                path="/"
+                element={<CoinPage currency={currency} />}
+              />
+              <Route
+                path="portfolio"
+                element={<Portfolio currency={currency} />}
+              />
+              <Route path="coin/:id" element={<Coin fiat={currency} />} />
+              <Route path="*" element={<Lost />} />
+            </Routes>
+          </MiddleContainer>
+
           <BottomBar />
         </Container>
       </BrowserRouter>
