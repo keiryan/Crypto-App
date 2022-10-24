@@ -9,6 +9,7 @@ export const Container = styled.div`
   margin: 20px 0px;
   position: relative;
   border: 3px solid ${(props) => props.theme.quinary};
+  min-height: 400px;
 `;
 
 export const ChartContainerText = styled(Base)`

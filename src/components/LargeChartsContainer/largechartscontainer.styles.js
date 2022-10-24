@@ -10,5 +10,5 @@ export const Container = styled(Base)`
 `;
 
 export const Spacer = styled.div`
-  width: 4%;
+  width: 42px;
 `;

@@ -7,7 +7,8 @@ export const Container = styled(Base)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  
+  /* @media (max-width: 1000px) {
+  } */
 `;
 
 export const TableContainer = styled(Base)`
@@ -15,9 +16,10 @@ export const TableContainer = styled(Base)`
   align-items: center;
   width: 100%;
   margin: 20px 0px;
-  /* @media (max-width: 1000px) {
+  @media (max-width: 1000px) {
+    align-items: flex-start;
     overflow-x: auto;
-  } */
+  }
 `;
 
 export const Table = styled.table`

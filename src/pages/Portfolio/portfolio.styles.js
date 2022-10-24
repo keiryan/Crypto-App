@@ -2,18 +2,14 @@ import styled from "styled-components";
 import { Base } from "../../app.styles";
 
 export const Container = styled(Base)`
-  width: 100%;
   flex-direction: column;
   position: relative;
   align-items: center;
   position: relative;
-  padding: 30px;
 `;
 
 export const ListContainer = styled(Base)`
-  width: 100%;
   height: 100%;
-  padding: 20px;
   justify-content: center;
 `;
 
@@ -196,7 +192,7 @@ export const AssetIconContainer = styled(Base)`
   background-color: ${(props) => props.theme.tertiary};
   flex-direction: column;
   align-items: center;
-  padding: 20px 40px;
+  justify-content: center;
   border-radius: 8px;
   margin: 0px 20px;
   width: 200px;

@@ -27,6 +27,7 @@ const ChartLegend = {
         ],
       },
       options: {
+        maintainAspectRatio: false,
         responsive: true,
         plugins: {
           legend: {
@@ -75,6 +76,7 @@ const ChartLegend = {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: false,

@@ -197,11 +197,11 @@ export default function CoinContainer(props) {
               )}
             </tbody>
           </Table>
-          <LoadMoreButton onClick={nextPage} length={coinBank.length}>
-            Load More
-          </LoadMoreButton>
         </TableContainer>
       )}
+       <LoadMoreButton onClick={nextPage} length={coinBank.length}>
+            Load More
+          </LoadMoreButton>
     </Container>
   );
 }
