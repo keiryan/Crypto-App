@@ -38,7 +38,6 @@ export const Container = styled(Base)`
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  /* padding-top: 12%; */
   z-index: 0;
   @media (max-width: 1000px) {
     padding-top: 12%;
@@ -49,7 +48,7 @@ export const MiddleContainer = styled(Base)`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 5%;
+  padding: 8%;
   position: relative;
   z-index: 0;
 `;

@@ -165,29 +165,17 @@ function CoinsIcon() {
 const BottomBar = (props) => {
   return (
     <Container>
+      <StyledLink to="/">
       <IconContainer>
-        <StyledLink to="/coinpage">
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            enable-background="new 0 0 20 20"
-            height="24px"
-            viewBox="0 0 20 20"
-            width="24px"
-            fill="#ffffff"
-          >
-            <rect fill="none" height="20" width="20" />
-            <path d="M15.06,4.94L13,4l2.06-0.94L16,1l0.94,2.06L19,4l-2.06,0.94L16,7L15.06,4.94z M16,19l0.94-2.06L19,16l-2.06-0.94L16,13 l-0.94,2.06L13,16l2.06,0.94L16,19z M2.5,10c0,2.76,2.24,5,5,5s5-2.24,5-5s-2.24-5-5-5S2.5,7.24,2.5,10z M7.5,3.5 c3.59,0,6.5,2.91,6.5,6.5s-2.91,6.5-6.5,6.5S1,13.59,1,10S3.91,3.5,7.5,3.5L7.5,3.5z M10,7.5H5v1.25h1.75V13h1.5V8.75H10V7.5z" />
-          </svg> */}
-          {/* <img src="coins.png" /> */}
-          
-        </StyledLink>
+        
         <CoinsIcon />
-        {/* <Icon /> */}
         <IconText>Home</IconText>
       </IconContainer>
+          </StyledLink>
+      
       <IconContainer>
         <StyledLink to="/portfolio">
-          {/* <svg
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             enable-background="new 0 0 24 24"
             height="24px"
@@ -202,14 +190,13 @@ const BottomBar = (props) => {
               </g>
               <path d="M14,17H7v-2h7V17z M17,13H7v-2h10V13z M17,9H7V7h10V9z" />
             </g>
-          </svg> */}
+          </svg>
         </StyledLink>
         <IconText>Portfolio</IconText>
       </IconContainer>
 
       <IconContainer>
-        {/* <SVG name="search" overrideWidth={20} /> */}
-        {/* <img src="search icon.png" /> */}
+        <img src="search icon.png" />
         <IconText>Search</IconText>
       </IconContainer>
     </Container>
