@@ -118,7 +118,6 @@ export default function App() {
 
   useEffect(() => {
     axios.get("http://localhost:8000/coins").then((res) => {
-      console.log(res.data);
     });
   }, []);
 

@@ -37,7 +37,6 @@ export default function Navbar(props) {
       data.data.data.total_market_cap.btc,
       data.data.data.total_market_cap.eth,
       data.data.data.total_volume.btc / data.data.data.total_market_cap.btc * 100
-      
     );
   };
 

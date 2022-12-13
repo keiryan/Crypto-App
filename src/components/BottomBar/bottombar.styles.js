@@ -29,4 +29,5 @@ export const IconText = styled.div``;
 
 export const StyledLink = styled(NavLink)`
   text-decoration: none;
+  color: ${(props) => props.theme.secondary};
 `;
