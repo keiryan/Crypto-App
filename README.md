@@ -2,6 +2,6 @@ An app built with the purpose of tracking and comparing detailed cryptocurrency 
 
 _**(Soon to be archived)**_
 
-Live demo here: https://crypto-app-git-body-rebuild-keiryan.vercel.app
+👨‍💻 Live demo here: https://crypto-app-git-body-rebuild-keiryan.vercel.app
 
-Live code here: https://githubbox.com/keiryan/Crypto-App
+⚙️ Live code here: https://githubbox.com/keiryan/Crypto-App
