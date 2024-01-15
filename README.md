@@ -1,4 +1,4 @@
-An app built with the purpose of tracking and comparing detailed cryptocurrency data that is pulled from the coingecko API. 
+An app built with the purpose of tracking and comparing detailed cryptocurrency data that is pulled from the coingecko API. 🤯
 
 _**(Soon to be archived)**_
 
